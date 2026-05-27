@@ -1,0 +1,19 @@
+{
+    "_notes": [
+        "adapted from nam_full_configs/learning/demo.json"
+    ],
+    "train_dataloader": {
+        "batch_size": 16,
+        "shuffle": true,
+        "pin_memory": true,
+        "drop_last": true,
+        "num_workers": 0
+    },
+    "val_dataloader": {},
+    "trainer": {
+        "accelerator": "auto",
+        "devices": 1,
+        "max_epochs": 10
+    },
+    "trainer_fit_kwargs": {}
+}
