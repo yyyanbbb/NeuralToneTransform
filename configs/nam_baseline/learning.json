@@ -13,7 +13,8 @@
   "trainer": {
     "accelerator": "auto",
     "devices": 1,
-    "max_epochs": 10
+    "max_epochs": 10,
+    "enable_progress_bar": false
   },
   "trainer_fit_kwargs": {}
 }

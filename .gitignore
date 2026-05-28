@@ -6,11 +6,15 @@ env/
 # Python cache
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 *.so
 
 # Checkpoints (large binary files)
 checkpoints/
+*.ckpt
+*.pt
+*.pth
 
 # Training runs
 runs/
@@ -36,3 +40,13 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+
+# Logs
+logs/*.tmp
+
+# Future large user data and experiment outputs should not go to GitHub.
+# Keep the current small baseline proof artifacts in data/raw/ and outputs/nam_baseline/.
+data/user_raw/
+data/user_aligned/
+data/user_chunks/
+outputs/experiments/

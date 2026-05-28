@@ -2,8 +2,8 @@
 
 ## 1. 报告信息
 
-- 项目路径: `C:\Users\yanbo\Desktop\Audio black box modeling system`
-- 报告日期: `2026-04-23`
+- 项目路径: `<repo-root>`
+- 报告日期: `2026-05-28`
 - 阶段范围:
   - 第 1 步: 环境搭建与可用性验证
   - 第 2 步: 官方 NAM baseline 跑通与产物验收
@@ -44,8 +44,11 @@
 执行命令:
 
 ```powershell
-Set-Location "C:\Users\yanbo\Desktop\Audio black box modeling system"
-powershell -ExecutionPolicy Bypass -File ".\scripts\setup_step1.ps1"
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python scripts/check_env.py
 ```
 
 执行结果:
@@ -63,14 +66,13 @@ powershell -ExecutionPolicy Bypass -File ".\scripts\setup_step1.ps1"
 执行命令:
 
 ```powershell
-Set-Location "C:\Users\yanbo\Desktop\Audio black box modeling system"
-powershell -ExecutionPolicy Bypass -File ".\scripts\run_step2_nam_baseline.ps1"
+.\scripts\run_step2_nam_baseline.ps1
 ```
 
 补充验收命令:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File ".\scripts\finalize_step2_without_rerun.ps1"
+.\scripts\finalize_step2_without_rerun.ps1
 ```
 
 执行结果:
@@ -89,7 +91,9 @@ powershell -ExecutionPolicy Bypass -File ".\scripts\finalize_step2_without_rerun
 - `scripts/prepare_nam_baseline.py`
 - `scripts/run_step2_nam_baseline.ps1`
 - `scripts/finalize_step2_without_rerun.ps1`
-- `STEP1_STEP2_EXECUTION.md`
+- `scripts/verify_reproducibility.ps1`
+- `requirements.txt`
+- `README.md`
 - `reports/step2_baseline_notes.md`
 
 ### 5.2 数据与配置
@@ -104,18 +108,33 @@ powershell -ExecutionPolicy Bypass -File ".\scripts\finalize_step2_without_rerun
 ### 5.3 训练产物
 
 - 源模型:
-  - `outputs/nam_baseline/2026-04-23-23-04-29/model.nam`
+  - `outputs/nam_baseline/2026-05-28-01-43-27/model.nam`
 - 标准模型:
   - `outputs/nam_baseline/model.nam`
 - 验收信息:
-  - size(bytes): `297456`
-  - last_write: `2026-04-23 23:39:23`
+  - size(bytes): `297454`
+  - last_write: `2026-05-28 02:01:32`
 
 ### 5.4 环境验证可视化
 
 - `reports/waveform_smoke.png`
 
-## 6. 验收结论
+### 5.5 运行日志
+
+- `logs/step1_env_check.log`
+- `logs/step2_prepare_nam_baseline.log`
+- `logs/step2_nam_training.log`
+- `logs/step2_finalize_model.log`
+
+## 6. Reproducibility Upgrade
+
+1. Added `requirements.txt`.
+2. Removed hard-coded local absolute paths from NAM baseline config generation.
+3. Added logs for environment check, baseline preparation, NAM training, and model finalization.
+4. Added `README.md` reproduction instructions.
+5. Added `scripts/verify_reproducibility.ps1`.
+
+## 7. 验收结论
 
 第 1/2 步验收通过，满足以下条件:
 

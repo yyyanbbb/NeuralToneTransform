@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import importlib
 import json
+import sys
+from datetime import datetime
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -20,6 +23,15 @@ def download(url: str, dst: Path) -> None:
     print(f"saved: {dst} ({len(data)} bytes)")
 
 
+def relpath_for_config(path: Path, root: Path) -> str:
+    return path.relative_to(root).as_posix()
+
+
+def package_version(module_name: str) -> str:
+    module = importlib.import_module(module_name)
+    return getattr(module, "__version__", "unknown")
+
+
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
     raw_dir = root / "data" / "raw"
@@ -31,6 +43,11 @@ def main() -> None:
 
     x_path = raw_dir / "baseline_input.wav"
     y_path = raw_dir / "baseline_output.wav"
+    print("=== Step2 Prepare NAM Baseline ===")
+    print(f"timestamp: {datetime.now().astimezone().isoformat(timespec='seconds')}")
+    print(f"python executable: {sys.executable}")
+    print(f"project root: {root}")
+    print(f"nam version: {package_version('nam')}")
     download(INPUT_URL, x_path)
     download(OUTPUT_URL, y_path)
 
@@ -38,7 +55,11 @@ def main() -> None:
         "_notes": ["adapted from nam_full_configs/data/single_pair.json"],
         "train": {"start_seconds": None, "stop_seconds": -9.0, "ny": 8192},
         "validation": {"start_seconds": -9.0, "stop_seconds": None, "ny": None},
-        "common": {"x_path": str(x_path.resolve()), "y_path": str(y_path.resolve()), "delay": 0},
+        "common": {
+            "x_path": relpath_for_config(x_path, root),
+            "y_path": relpath_for_config(y_path, root),
+            "delay": 0,
+        },
     }
 
     model_cfg = {
@@ -87,14 +108,24 @@ def main() -> None:
             "num_workers": 0,
         },
         "val_dataloader": {},
-        "trainer": {"accelerator": "auto", "devices": 1, "max_epochs": 10},
+        "trainer": {
+            "accelerator": "auto",
+            "devices": 1,
+            "max_epochs": 10,
+            "enable_progress_bar": False,
+        },
         "trainer_fit_kwargs": {},
     }
 
     (cfg_dir / "data.json").write_text(json.dumps(data_cfg, indent=2), encoding="utf-8")
     (cfg_dir / "model.json").write_text(json.dumps(model_cfg, indent=2), encoding="utf-8")
     (cfg_dir / "learning.json").write_text(json.dumps(learning_cfg, indent=2), encoding="utf-8")
-    print(f"configs written to: {cfg_dir}")
+    print(f"baseline input: {x_path}")
+    print(f"baseline output: {y_path}")
+    print(f"data config: {cfg_dir / 'data.json'}")
+    print(f"model config: {cfg_dir / 'model.json'}")
+    print(f"learning config: {cfg_dir / 'learning.json'}")
+    print(f"output directory: {out_dir}")
 
 
 if __name__ == "__main__":

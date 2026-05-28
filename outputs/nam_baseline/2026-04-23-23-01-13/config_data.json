@@ -13,8 +13,8 @@
         "ny": null
     },
     "common": {
-        "x_path": "C:\\Users\\yanbo\\Desktop\\Audio black box modeling system\\data\\raw\\baseline_input.wav",
-        "y_path": "C:\\Users\\yanbo\\Desktop\\Audio black box modeling system\\data\\raw\\baseline_output.wav",
+        "x_path": "data/raw/baseline_input.wav",
+        "y_path": "data/raw/baseline_output.wav",
         "delay": 0
     }
 }

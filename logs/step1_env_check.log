@@ -1,0 +1,18 @@
+=== Step1 Environment Check ===
+timestamp: 2026-05-28T01:13:22+08:00
+python executable: C:\Users\yanbo\Desktop\Audio black box modeling system\.venv\Scripts\python.exe
+project root: C:\Users\yanbo\Desktop\Audio black box modeling system
+torch version: 2.11.0+cpu
+cuda available: False
+torchaudio version: 2.11.0+cpu
+librosa version: 0.11.0
+matplotlib version: 3.10.8
+tensorboard version: 2.20.0
+soundfile version: 0.13.1
+scipy version: 1.17.1
+numpy version: 2.4.4
+pandas version: 3.0.2
+wav read/write OK: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\smoke_test_tone.wav
+waveform plot saved: C:\Users\yanbo\Desktop\Audio black box modeling system\reports\waveform_smoke.png
+all imports OK
+log file: C:\Users\yanbo\Desktop\Audio black box modeling system\logs\step1_env_check.log
