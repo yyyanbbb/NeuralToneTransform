@@ -52,9 +52,26 @@ first item wet shape: (1, 65536)
 sample rate: 48000
 
 verify_data_pipeline.py:
-pass_count: 36
+pass_count: 40
 fail_count: 0
 OVERALL: PASS
+```
+
+## Clipping Policy
+
+- Default alignment mode records clipping risk as warnings and continues.
+- Strict mode is available with `--strict-clipping`; in that mode, peak amplitude `>= 1.0` fails alignment.
+- `alignment_metadata.json` records `dry_clipping_risk`, `wet_clipping_risk`, `strict_clipping`, and `warnings`.
+
+Latest baseline run:
+
+```text
+default clipping mode: PASS
+strict clipping mode: PASS for current baseline audio because dry_peak and wet_peak are below 1.0
+dry_peak: 0.9899998903274536
+wet_peak: 0.7202577590942383
+dry_clipping_risk: false
+wet_clipping_risk: false
 ```
 
 ## Remaining Work

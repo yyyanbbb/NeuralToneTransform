@@ -109,6 +109,38 @@ Verify the full data pipeline:
 
 The current data processing module covers dry/wet sample-rate checks, cross-correlation delay estimation, automatic trimming, train/val/test chunk generation, and PyTorch Dataset loading.
 
+By default, alignment treats peak amplitude `>= 1.0` as a warning instead of stopping the pipeline. Clipping risk and warning messages are written to `data/aligned/alignment_metadata.json`. To make clipping risk fatal, add `--strict-clipping`:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\data\align.py --dry data/raw/baseline_input.wav --wet data/raw/baseline_output.wav --out-dir data/aligned --strict-clipping
+```
+
+## A2 Failure Logs
+
+The completed A2 smoke baseline status is preserved in `reports/STEP3_A2_COMPLETION_REPORT.md`. Future A2 run failures append entries under `## Failure Log` instead of overwriting the successful status. This keeps the historical success state separate from later troubleshooting records.
+
+## Alignment Clipping Policy
+
+- Default behavior: peak amplitude `>= 1.0` prints a warning and records clipping risk in metadata.
+- Strict behavior: add `--strict-clipping` to fail alignment on clipping risk.
+- Metadata fields include `dry_clipping_risk`, `wet_clipping_risk`, `strict_clipping`, and `warnings`.
+
+## Evaluation
+
+`src/ntt/evaluation/metrics.py` provides MSE, MAE, ESR, Normalized MAE, SNR, and MRSTFT:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\metrics.py --pred data/aligned/aligned_dry.wav --target data/aligned/aligned_wet.wav
+```
+
+`src/ntt/evaluation/compare_models.py --artifact-only` generates the A1/A2 artifact comparison table:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\compare_models.py --artifact-only
+```
+
+When prediction audio is not available, ESR, MRSTFT, SNR, and other audio metrics are marked as `TBD`; do not treat artifact-only rows as audio-quality measurements.
+
 ## Notes
 
 - A1 and A2 are safer in separate environments.

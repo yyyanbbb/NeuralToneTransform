@@ -40,3 +40,24 @@ output: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\baseline
   clipping_risk: False
 duration_delta_seconds: 0.000000
 OVERALL: PASS
+=== audio pair verification 2026-06-10T20:22:00+08:00 ===
+input: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\baseline_input.wav
+  sample_rate: 48000
+  channels: 1
+  frames: 9120000
+  duration_seconds: 190.000000
+  subtype: PCM_24
+  dtype: float64
+  peak_amplitude: 0.990000
+  clipping_risk: False
+output: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\baseline_output.wav
+  sample_rate: 48000
+  channels: 1
+  frames: 9120000
+  duration_seconds: 190.000000
+  subtype: PCM_24
+  dtype: float64
+  peak_amplitude: 0.720258
+  clipping_risk: False
+duration_delta_seconds: 0.000000
+OVERALL: PASS

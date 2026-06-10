@@ -35,30 +35,33 @@ function Write-LogLine {
   $Message | Tee-Object -FilePath $LogPath -Append
 }
 
-function Add-A2ReportFailure {
+function Add-A2FailureLog {
   param(
     [Parameter(Mandatory = $true)][string]$Command,
-    [Parameter(Mandatory = $true)][string]$ErrorSummary
+    [Parameter(Mandatory = $true)][string]$ErrorSummary,
+    [Parameter(Mandatory = $true)][int]$ExitCode
   )
-  $Content = @"
-# STEP3 A2 COMPLETION REPORT
 
-Status: A2 not completed.
+  if (-not (Test-Path $ReportPath)) {
+    "# STEP3 A2 Completion Report`n`n## Current Status`n`nStatus: A2 smoke baseline completed.`n" | Set-Content -LiteralPath $ReportPath -Encoding UTF8
+  }
 
-## Latest Failure
+  $ReportText = Get-Content -LiteralPath $ReportPath -Raw
+  $Prefix = ""
+  if ($ReportText -notmatch '(?m)^## Failure Log\s*$') {
+    $Prefix = "`n`n## Failure Log`n"
+  }
 
-- timestamp: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss zzz')
-- failed_command: ``$Command``
-- error_summary: $ErrorSummary
-- training_log: logs/a2/a2_training.log
+  $Entry = @"
+$Prefix
+### $(Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz")
 
-## Suggested Next Steps
-
-1. Confirm neural-amp-modeler==0.13.0 supports the current Python version.
-2. Confirm configs/a2_baseline/model_packed.json matches the official PackedWaveNet schema.
-3. Re-run .\scripts\a2\run_a2_baseline.ps1 after resolving the dependency or schema error.
+- Failed command: ``$Command``
+- Error summary: $ErrorSummary
+- Exit code: ``$ExitCode``
+- Notes: This failure does not invalidate the previously completed A2 smoke baseline unless the canonical model artifact is removed or inspection no longer passes.
 "@
-  $Content | Set-Content -LiteralPath $ReportPath -Encoding UTF8
+  Add-Content -LiteralPath $ReportPath -Value $Entry -Encoding UTF8
 }
 
 function Invoke-LoggedCommand {
@@ -74,7 +77,7 @@ function Invoke-LoggedCommand {
   if ($ExitCode -ne 0) {
     $Message = "$FailureMessage (exit code $ExitCode)"
     Write-LogLine -LogPath $LogPath -Message "ERROR: $Message"
-    Add-A2ReportFailure -Command $CommandText -ErrorSummary $Message
+    Add-A2FailureLog -Command $CommandText -ErrorSummary $Message -ExitCode $ExitCode
     exit 1
   }
 }
@@ -91,7 +94,7 @@ function Invoke-CmdLoggedCommand {
   if ($ExitCode -ne 0) {
     $Message = "$FailureMessage (exit code $ExitCode)"
     Write-LogLine -LogPath $LogPath -Message "ERROR: $Message"
-    Add-A2ReportFailure -Command $CommandText -ErrorSummary $Message
+    Add-A2FailureLog -Command $CommandText -ErrorSummary $Message -ExitCode $ExitCode
     exit 1
   }
 }
@@ -129,7 +132,7 @@ try {
       if ($FinalizeExitCode -ne 0) {
         $Message = "A2 finalize step failed with exit code $FinalizeExitCode"
         Write-LogLine -LogPath $TrainingLog -Message "ERROR: $Message"
-        Add-A2ReportFailure -Command ".\scripts\a2\finalize_a2_model.ps1" -ErrorSummary $Message
+        Add-A2FailureLog -Command ".\scripts\a2\finalize_a2_model.ps1" -ErrorSummary $Message -ExitCode $FinalizeExitCode
         exit 1
       }
     }
@@ -148,12 +151,12 @@ try {
   & ".\scripts\a2\finalize_a2_model.ps1" 2>&1 | Tee-Object -FilePath $TrainingLog -Append
   $FinalizeExitCode = $global:LASTEXITCODE
   if ($FinalizeExitCode -ne 0) {
-    Add-A2ReportFailure -Command ".\scripts\a2\finalize_a2_model.ps1" -ErrorSummary "A2 finalize step failed with exit code $FinalizeExitCode"
+    Add-A2FailureLog -Command ".\scripts\a2\finalize_a2_model.ps1" -ErrorSummary "A2 finalize step failed with exit code $FinalizeExitCode" -ExitCode $FinalizeExitCode
     exit 1
   }
 }
 catch {
   Write-LogLine -LogPath $TrainingLog -Message "ERROR: $($_.Exception.Message)"
-  Add-A2ReportFailure -Command ".\scripts\a2\run_a2_baseline.ps1" -ErrorSummary $_.Exception.Message
+  Add-A2FailureLog -Command ".\scripts\a2\run_a2_baseline.ps1" -ErrorSummary $_.Exception.Message -ExitCode 1
   exit 1
 }

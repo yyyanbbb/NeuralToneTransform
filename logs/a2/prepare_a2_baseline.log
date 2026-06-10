@@ -1,6 +1,6 @@
 === A2 Prepare PackedWaveNet Baseline ===
-timestamp: 2026-06-10T01:57:55+08:00
-python executable: C:\Users\yanbo\Desktop\Audio black box modeling system\.venv-a2\Scripts\python.exe
+timestamp: 2026-06-10T20:21:41+08:00
+python executable: C:\Users\yanbo\Desktop\audio black box modeling system\.venv-a2\Scripts\python.exe
 project root: C:\Users\yanbo\Desktop\Audio black box modeling system
 nam version: 0.13.0
 input: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\baseline_input.wav
@@ -23,7 +23,7 @@ output: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\baseline
   clipping_risk: False
 duration_delta_seconds: 0.000000
 OVERALL: PASS
-copied official packed config from: C:\Users\yanbo\Desktop\Audio black box modeling system\.venv-a2\Lib\site-packages\nam\train\_resources\config_model_packed.json
+copied official packed config from: C:\Users\yanbo\Desktop\audio black box modeling system\.venv-a2\Lib\site-packages\nam\train\_resources\config_model_packed.json
 baseline input: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\baseline_input.wav
 baseline output: C:\Users\yanbo\Desktop\Audio black box modeling system\data\raw\baseline_output.wav
 data config: C:\Users\yanbo\Desktop\Audio black box modeling system\configs\a2_baseline\data.json

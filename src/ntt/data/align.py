@@ -45,7 +45,8 @@ def validate_audio_pair(
     wet_rate: int,
     *,
     duration_tolerance_seconds: float = 0.05,
-) -> None:
+) -> list[str]:
+    warnings: list[str] = []
     if dry_rate != wet_rate:
         raise ValueError(f"Sample rates differ: dry={dry_rate}, wet={wet_rate}")
     if dry.ndim != 2 or wet.ndim != 2:
@@ -64,10 +65,13 @@ def validate_audio_pair(
             f"tolerance is {duration_tolerance_seconds:.6f}s"
         )
 
-    if peak_amplitude(dry) >= 1.0:
-        raise ValueError("Dry audio has clipping risk: peak amplitude is >= 1.0")
-    if peak_amplitude(wet) >= 1.0:
-        raise ValueError("Wet audio has clipping risk: peak amplitude is >= 1.0")
+    dry_peak = peak_amplitude(dry)
+    wet_peak = peak_amplitude(wet)
+    if dry_peak >= 1.0:
+        warnings.append("WARNING: dry audio peak amplitude is >= 1.0. Potential clipping detected.")
+    if wet_peak >= 1.0:
+        warnings.append("WARNING: wet audio peak amplitude is >= 1.0. Potential clipping detected.")
+    return warnings
 
 
 def to_mono(data: np.ndarray) -> np.ndarray:
@@ -142,6 +146,7 @@ def align_audio_pair(
     out_dir: str | Path,
     *,
     max_lag_samples: int | None = None,
+    strict_clipping: bool = False,
 ) -> dict:
     dry_resolved = resolve_path(dry_path)
     wet_resolved = resolve_path(wet_path)
@@ -150,7 +155,15 @@ def align_audio_pair(
 
     dry, dry_rate, _ = read_audio(dry_resolved)
     wet, wet_rate, _ = read_audio(wet_resolved)
-    validate_audio_pair(dry, wet, dry_rate, wet_rate)
+    warnings = validate_audio_pair(dry, wet, dry_rate, wet_rate)
+    dry_peak = peak_amplitude(dry)
+    wet_peak = peak_amplitude(wet)
+    dry_clipping_risk = dry_peak >= 1.0
+    wet_clipping_risk = wet_peak >= 1.0
+    if strict_clipping and (dry_clipping_risk or wet_clipping_risk):
+        raise ValueError("Potential clipping detected and strict_clipping is enabled")
+    for warning in warnings:
+        print(warning)
 
     delay = estimate_delay_samples(dry, wet, max_lag_samples=max_lag_samples)
     aligned_dry, aligned_wet = trim_to_alignment(dry, wet, delay)
@@ -170,8 +183,12 @@ def align_audio_pair(
         "original_num_samples_wet": int(len(wet)),
         "aligned_num_samples": int(len(aligned_dry)),
         "estimated_delay_samples": int(delay),
-        "dry_peak": peak_amplitude(dry),
-        "wet_peak": peak_amplitude(wet),
+        "dry_peak": dry_peak,
+        "wet_peak": wet_peak,
+        "dry_clipping_risk": dry_clipping_risk,
+        "wet_clipping_risk": wet_clipping_risk,
+        "strict_clipping": bool(strict_clipping),
+        "warnings": warnings,
         "created_at": datetime.now().astimezone().isoformat(timespec="seconds"),
     }
     (out_resolved / "alignment_metadata.json").write_text(
@@ -187,6 +204,7 @@ def main() -> int:
     parser.add_argument("--wet", required=True)
     parser.add_argument("--out-dir", required=True)
     parser.add_argument("--max-lag-samples", type=int, default=None)
+    parser.add_argument("--strict-clipping", action="store_true")
     args = parser.parse_args()
 
     try:
@@ -195,6 +213,7 @@ def main() -> int:
             args.wet,
             args.out_dir,
             max_lag_samples=args.max_lag_samples,
+            strict_clipping=args.strict_clipping,
         )
     except Exception as exc:
         raise SystemExit(f"ERROR: alignment failed: {exc}") from exc

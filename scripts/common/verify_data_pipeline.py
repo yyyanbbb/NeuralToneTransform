@@ -19,6 +19,10 @@ REQUIRED_ALIGNMENT_FIELDS = {
     "estimated_delay_samples",
     "dry_peak",
     "wet_peak",
+    "dry_clipping_risk",
+    "wet_clipping_risk",
+    "strict_clipping",
+    "warnings",
     "created_at",
 }
 
