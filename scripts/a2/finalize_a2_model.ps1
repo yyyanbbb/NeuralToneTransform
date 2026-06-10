@@ -53,10 +53,10 @@ try {
 
   $global:LASTEXITCODE = 0
   $InspectOutput = & $Python ".\scripts\a2\inspect_a2_model.py" 2>&1
-  $InspectExitCode = $LASTEXITCODE
+  $InspectExitCode = $global:LASTEXITCODE
   $InspectOutput | ForEach-Object { Write-LogLine ([string]$_) }
   if ($InspectExitCode -ne 0) {
-    throw "A2 model inspection did not pass"
+    throw "[A2] Model inspection failed with exit code $InspectExitCode"
   }
 }
 catch {

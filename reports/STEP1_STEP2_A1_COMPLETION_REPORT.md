@@ -71,6 +71,7 @@ A1 has been standardized into the new A1 directory layout without deleting the o
 Latest PowerShell verification result:
 
 ```text
+timestamp: 2026-06-10 19:39:27 +08:00
 pass_count: 12
 fail_count: 0
 OVERALL: PASS

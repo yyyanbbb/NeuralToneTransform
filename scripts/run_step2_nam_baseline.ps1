@@ -40,8 +40,9 @@ function Invoke-LoggedCommand {
     [Parameter(Mandatory = $true)][string]$FailureMessage
   )
 
+  $global:LASTEXITCODE = 0
   & $Command 2>&1 | Tee-Object -FilePath $LogPath -Append
-  $ExitCode = $LASTEXITCODE
+  $ExitCode = $global:LASTEXITCODE
   if ($ExitCode -ne 0) {
     Write-LogLine -LogPath $LogPath -Message "ERROR: $FailureMessage (exit code $ExitCode)"
     exit 1
@@ -55,8 +56,9 @@ function Invoke-CmdLoggedCommand {
     [Parameter(Mandatory = $true)][string]$FailureMessage
   )
 
+  $global:LASTEXITCODE = 0
   & cmd.exe /d /c $CommandText | Tee-Object -FilePath $LogPath -Append
-  $ExitCode = $LASTEXITCODE
+  $ExitCode = $global:LASTEXITCODE
   if ($ExitCode -ne 0) {
     Write-LogLine -LogPath $LogPath -Message "ERROR: $FailureMessage (exit code $ExitCode)"
     exit 1
@@ -92,8 +94,9 @@ try {
   Write-LogLine -LogPath $TrainingLog -Message "output directory: $OutDir"
 
   Write-LogLine -LogPath $TrainingLog -Message "[Step2] Checking neural-amp-modeler installation..."
+  $global:LASTEXITCODE = 0
   & $Python -c "import nam; print(getattr(nam, '__version__', 'unknown'))" 2>&1 | Tee-Object -FilePath $TrainingLog -Append
-  if ($LASTEXITCODE -ne 0) {
+  if ($global:LASTEXITCODE -ne 0) {
     Write-LogLine -LogPath $TrainingLog -Message "[Step2] neural-amp-modeler not found, installing..."
     Invoke-LoggedCommand -LogPath $TrainingLog -Command { & $Pip install neural-amp-modeler } -FailureMessage "[Step2] Failed to install neural-amp-modeler"
   } else {

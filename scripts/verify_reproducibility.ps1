@@ -51,11 +51,13 @@ Add-Result -Passed (Test-FileExists $Requirements) -Message "requirements.txt ex
 Add-Result -Passed (Test-FileExists $VenvPython) -Message "virtualenv python exists at $VenvPython"
 
 if (Test-FileExists $VenvPython) {
+  $global:LASTEXITCODE = 0
   & $VenvPython --version
-  Add-Result -Passed ($LASTEXITCODE -eq 0) -Message "python executable runs successfully"
+  Add-Result -Passed ($global:LASTEXITCODE -eq 0) -Message "python executable runs successfully"
 
+  $global:LASTEXITCODE = 0
   & $VenvPython ".\scripts\print_dependency_versions.py" torch torchaudio librosa matplotlib tensorboard soundfile scipy numpy pandas neural-amp-modeler
-  Add-Result -Passed ($LASTEXITCODE -eq 0) -Message "core baseline dependencies import successfully"
+  Add-Result -Passed ($global:LASTEXITCODE -eq 0) -Message "core baseline dependencies import successfully"
 }
 
 if (Test-FileExists $DataConfig) {

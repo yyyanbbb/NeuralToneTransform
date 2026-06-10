@@ -1,0 +1,993 @@
+{
+  "source_dry": "data/aligned/aligned_dry.wav",
+  "source_wet": "data/aligned/aligned_wet.wav",
+  "sample_rate": 48000,
+  "chunk_size": 65536,
+  "hop_size": 65536,
+  "total_chunks": 139,
+  "train_chunks": 111,
+  "val_chunks": 13,
+  "test_chunks": 15,
+  "split_ratios": {
+    "train": 0.8,
+    "val": 0.1,
+    "test": 0.1
+  },
+  "shuffle": false,
+  "created_at": "2026-06-10T19:41:26+08:00",
+  "chunks": [
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000000.wav",
+      "wet_path": "data/chunks/train/wet_000000.wav",
+      "start_sample": 0,
+      "end_sample": 65536
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000001.wav",
+      "wet_path": "data/chunks/train/wet_000001.wav",
+      "start_sample": 65536,
+      "end_sample": 131072
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000002.wav",
+      "wet_path": "data/chunks/train/wet_000002.wav",
+      "start_sample": 131072,
+      "end_sample": 196608
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000003.wav",
+      "wet_path": "data/chunks/train/wet_000003.wav",
+      "start_sample": 196608,
+      "end_sample": 262144
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000004.wav",
+      "wet_path": "data/chunks/train/wet_000004.wav",
+      "start_sample": 262144,
+      "end_sample": 327680
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000005.wav",
+      "wet_path": "data/chunks/train/wet_000005.wav",
+      "start_sample": 327680,
+      "end_sample": 393216
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000006.wav",
+      "wet_path": "data/chunks/train/wet_000006.wav",
+      "start_sample": 393216,
+      "end_sample": 458752
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000007.wav",
+      "wet_path": "data/chunks/train/wet_000007.wav",
+      "start_sample": 458752,
+      "end_sample": 524288
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000008.wav",
+      "wet_path": "data/chunks/train/wet_000008.wav",
+      "start_sample": 524288,
+      "end_sample": 589824
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000009.wav",
+      "wet_path": "data/chunks/train/wet_000009.wav",
+      "start_sample": 589824,
+      "end_sample": 655360
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000010.wav",
+      "wet_path": "data/chunks/train/wet_000010.wav",
+      "start_sample": 655360,
+      "end_sample": 720896
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000011.wav",
+      "wet_path": "data/chunks/train/wet_000011.wav",
+      "start_sample": 720896,
+      "end_sample": 786432
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000012.wav",
+      "wet_path": "data/chunks/train/wet_000012.wav",
+      "start_sample": 786432,
+      "end_sample": 851968
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000013.wav",
+      "wet_path": "data/chunks/train/wet_000013.wav",
+      "start_sample": 851968,
+      "end_sample": 917504
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000014.wav",
+      "wet_path": "data/chunks/train/wet_000014.wav",
+      "start_sample": 917504,
+      "end_sample": 983040
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000015.wav",
+      "wet_path": "data/chunks/train/wet_000015.wav",
+      "start_sample": 983040,
+      "end_sample": 1048576
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000016.wav",
+      "wet_path": "data/chunks/train/wet_000016.wav",
+      "start_sample": 1048576,
+      "end_sample": 1114112
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000017.wav",
+      "wet_path": "data/chunks/train/wet_000017.wav",
+      "start_sample": 1114112,
+      "end_sample": 1179648
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000018.wav",
+      "wet_path": "data/chunks/train/wet_000018.wav",
+      "start_sample": 1179648,
+      "end_sample": 1245184
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000019.wav",
+      "wet_path": "data/chunks/train/wet_000019.wav",
+      "start_sample": 1245184,
+      "end_sample": 1310720
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000020.wav",
+      "wet_path": "data/chunks/train/wet_000020.wav",
+      "start_sample": 1310720,
+      "end_sample": 1376256
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000021.wav",
+      "wet_path": "data/chunks/train/wet_000021.wav",
+      "start_sample": 1376256,
+      "end_sample": 1441792
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000022.wav",
+      "wet_path": "data/chunks/train/wet_000022.wav",
+      "start_sample": 1441792,
+      "end_sample": 1507328
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000023.wav",
+      "wet_path": "data/chunks/train/wet_000023.wav",
+      "start_sample": 1507328,
+      "end_sample": 1572864
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000024.wav",
+      "wet_path": "data/chunks/train/wet_000024.wav",
+      "start_sample": 1572864,
+      "end_sample": 1638400
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000025.wav",
+      "wet_path": "data/chunks/train/wet_000025.wav",
+      "start_sample": 1638400,
+      "end_sample": 1703936
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000026.wav",
+      "wet_path": "data/chunks/train/wet_000026.wav",
+      "start_sample": 1703936,
+      "end_sample": 1769472
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000027.wav",
+      "wet_path": "data/chunks/train/wet_000027.wav",
+      "start_sample": 1769472,
+      "end_sample": 1835008
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000028.wav",
+      "wet_path": "data/chunks/train/wet_000028.wav",
+      "start_sample": 1835008,
+      "end_sample": 1900544
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000029.wav",
+      "wet_path": "data/chunks/train/wet_000029.wav",
+      "start_sample": 1900544,
+      "end_sample": 1966080
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000030.wav",
+      "wet_path": "data/chunks/train/wet_000030.wav",
+      "start_sample": 1966080,
+      "end_sample": 2031616
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000031.wav",
+      "wet_path": "data/chunks/train/wet_000031.wav",
+      "start_sample": 2031616,
+      "end_sample": 2097152
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000032.wav",
+      "wet_path": "data/chunks/train/wet_000032.wav",
+      "start_sample": 2097152,
+      "end_sample": 2162688
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000033.wav",
+      "wet_path": "data/chunks/train/wet_000033.wav",
+      "start_sample": 2162688,
+      "end_sample": 2228224
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000034.wav",
+      "wet_path": "data/chunks/train/wet_000034.wav",
+      "start_sample": 2228224,
+      "end_sample": 2293760
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000035.wav",
+      "wet_path": "data/chunks/train/wet_000035.wav",
+      "start_sample": 2293760,
+      "end_sample": 2359296
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000036.wav",
+      "wet_path": "data/chunks/train/wet_000036.wav",
+      "start_sample": 2359296,
+      "end_sample": 2424832
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000037.wav",
+      "wet_path": "data/chunks/train/wet_000037.wav",
+      "start_sample": 2424832,
+      "end_sample": 2490368
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000038.wav",
+      "wet_path": "data/chunks/train/wet_000038.wav",
+      "start_sample": 2490368,
+      "end_sample": 2555904
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000039.wav",
+      "wet_path": "data/chunks/train/wet_000039.wav",
+      "start_sample": 2555904,
+      "end_sample": 2621440
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000040.wav",
+      "wet_path": "data/chunks/train/wet_000040.wav",
+      "start_sample": 2621440,
+      "end_sample": 2686976
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000041.wav",
+      "wet_path": "data/chunks/train/wet_000041.wav",
+      "start_sample": 2686976,
+      "end_sample": 2752512
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000042.wav",
+      "wet_path": "data/chunks/train/wet_000042.wav",
+      "start_sample": 2752512,
+      "end_sample": 2818048
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000043.wav",
+      "wet_path": "data/chunks/train/wet_000043.wav",
+      "start_sample": 2818048,
+      "end_sample": 2883584
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000044.wav",
+      "wet_path": "data/chunks/train/wet_000044.wav",
+      "start_sample": 2883584,
+      "end_sample": 2949120
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000045.wav",
+      "wet_path": "data/chunks/train/wet_000045.wav",
+      "start_sample": 2949120,
+      "end_sample": 3014656
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000046.wav",
+      "wet_path": "data/chunks/train/wet_000046.wav",
+      "start_sample": 3014656,
+      "end_sample": 3080192
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000047.wav",
+      "wet_path": "data/chunks/train/wet_000047.wav",
+      "start_sample": 3080192,
+      "end_sample": 3145728
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000048.wav",
+      "wet_path": "data/chunks/train/wet_000048.wav",
+      "start_sample": 3145728,
+      "end_sample": 3211264
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000049.wav",
+      "wet_path": "data/chunks/train/wet_000049.wav",
+      "start_sample": 3211264,
+      "end_sample": 3276800
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000050.wav",
+      "wet_path": "data/chunks/train/wet_000050.wav",
+      "start_sample": 3276800,
+      "end_sample": 3342336
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000051.wav",
+      "wet_path": "data/chunks/train/wet_000051.wav",
+      "start_sample": 3342336,
+      "end_sample": 3407872
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000052.wav",
+      "wet_path": "data/chunks/train/wet_000052.wav",
+      "start_sample": 3407872,
+      "end_sample": 3473408
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000053.wav",
+      "wet_path": "data/chunks/train/wet_000053.wav",
+      "start_sample": 3473408,
+      "end_sample": 3538944
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000054.wav",
+      "wet_path": "data/chunks/train/wet_000054.wav",
+      "start_sample": 3538944,
+      "end_sample": 3604480
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000055.wav",
+      "wet_path": "data/chunks/train/wet_000055.wav",
+      "start_sample": 3604480,
+      "end_sample": 3670016
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000056.wav",
+      "wet_path": "data/chunks/train/wet_000056.wav",
+      "start_sample": 3670016,
+      "end_sample": 3735552
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000057.wav",
+      "wet_path": "data/chunks/train/wet_000057.wav",
+      "start_sample": 3735552,
+      "end_sample": 3801088
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000058.wav",
+      "wet_path": "data/chunks/train/wet_000058.wav",
+      "start_sample": 3801088,
+      "end_sample": 3866624
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000059.wav",
+      "wet_path": "data/chunks/train/wet_000059.wav",
+      "start_sample": 3866624,
+      "end_sample": 3932160
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000060.wav",
+      "wet_path": "data/chunks/train/wet_000060.wav",
+      "start_sample": 3932160,
+      "end_sample": 3997696
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000061.wav",
+      "wet_path": "data/chunks/train/wet_000061.wav",
+      "start_sample": 3997696,
+      "end_sample": 4063232
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000062.wav",
+      "wet_path": "data/chunks/train/wet_000062.wav",
+      "start_sample": 4063232,
+      "end_sample": 4128768
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000063.wav",
+      "wet_path": "data/chunks/train/wet_000063.wav",
+      "start_sample": 4128768,
+      "end_sample": 4194304
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000064.wav",
+      "wet_path": "data/chunks/train/wet_000064.wav",
+      "start_sample": 4194304,
+      "end_sample": 4259840
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000065.wav",
+      "wet_path": "data/chunks/train/wet_000065.wav",
+      "start_sample": 4259840,
+      "end_sample": 4325376
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000066.wav",
+      "wet_path": "data/chunks/train/wet_000066.wav",
+      "start_sample": 4325376,
+      "end_sample": 4390912
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000067.wav",
+      "wet_path": "data/chunks/train/wet_000067.wav",
+      "start_sample": 4390912,
+      "end_sample": 4456448
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000068.wav",
+      "wet_path": "data/chunks/train/wet_000068.wav",
+      "start_sample": 4456448,
+      "end_sample": 4521984
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000069.wav",
+      "wet_path": "data/chunks/train/wet_000069.wav",
+      "start_sample": 4521984,
+      "end_sample": 4587520
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000070.wav",
+      "wet_path": "data/chunks/train/wet_000070.wav",
+      "start_sample": 4587520,
+      "end_sample": 4653056
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000071.wav",
+      "wet_path": "data/chunks/train/wet_000071.wav",
+      "start_sample": 4653056,
+      "end_sample": 4718592
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000072.wav",
+      "wet_path": "data/chunks/train/wet_000072.wav",
+      "start_sample": 4718592,
+      "end_sample": 4784128
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000073.wav",
+      "wet_path": "data/chunks/train/wet_000073.wav",
+      "start_sample": 4784128,
+      "end_sample": 4849664
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000074.wav",
+      "wet_path": "data/chunks/train/wet_000074.wav",
+      "start_sample": 4849664,
+      "end_sample": 4915200
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000075.wav",
+      "wet_path": "data/chunks/train/wet_000075.wav",
+      "start_sample": 4915200,
+      "end_sample": 4980736
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000076.wav",
+      "wet_path": "data/chunks/train/wet_000076.wav",
+      "start_sample": 4980736,
+      "end_sample": 5046272
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000077.wav",
+      "wet_path": "data/chunks/train/wet_000077.wav",
+      "start_sample": 5046272,
+      "end_sample": 5111808
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000078.wav",
+      "wet_path": "data/chunks/train/wet_000078.wav",
+      "start_sample": 5111808,
+      "end_sample": 5177344
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000079.wav",
+      "wet_path": "data/chunks/train/wet_000079.wav",
+      "start_sample": 5177344,
+      "end_sample": 5242880
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000080.wav",
+      "wet_path": "data/chunks/train/wet_000080.wav",
+      "start_sample": 5242880,
+      "end_sample": 5308416
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000081.wav",
+      "wet_path": "data/chunks/train/wet_000081.wav",
+      "start_sample": 5308416,
+      "end_sample": 5373952
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000082.wav",
+      "wet_path": "data/chunks/train/wet_000082.wav",
+      "start_sample": 5373952,
+      "end_sample": 5439488
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000083.wav",
+      "wet_path": "data/chunks/train/wet_000083.wav",
+      "start_sample": 5439488,
+      "end_sample": 5505024
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000084.wav",
+      "wet_path": "data/chunks/train/wet_000084.wav",
+      "start_sample": 5505024,
+      "end_sample": 5570560
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000085.wav",
+      "wet_path": "data/chunks/train/wet_000085.wav",
+      "start_sample": 5570560,
+      "end_sample": 5636096
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000086.wav",
+      "wet_path": "data/chunks/train/wet_000086.wav",
+      "start_sample": 5636096,
+      "end_sample": 5701632
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000087.wav",
+      "wet_path": "data/chunks/train/wet_000087.wav",
+      "start_sample": 5701632,
+      "end_sample": 5767168
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000088.wav",
+      "wet_path": "data/chunks/train/wet_000088.wav",
+      "start_sample": 5767168,
+      "end_sample": 5832704
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000089.wav",
+      "wet_path": "data/chunks/train/wet_000089.wav",
+      "start_sample": 5832704,
+      "end_sample": 5898240
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000090.wav",
+      "wet_path": "data/chunks/train/wet_000090.wav",
+      "start_sample": 5898240,
+      "end_sample": 5963776
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000091.wav",
+      "wet_path": "data/chunks/train/wet_000091.wav",
+      "start_sample": 5963776,
+      "end_sample": 6029312
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000092.wav",
+      "wet_path": "data/chunks/train/wet_000092.wav",
+      "start_sample": 6029312,
+      "end_sample": 6094848
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000093.wav",
+      "wet_path": "data/chunks/train/wet_000093.wav",
+      "start_sample": 6094848,
+      "end_sample": 6160384
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000094.wav",
+      "wet_path": "data/chunks/train/wet_000094.wav",
+      "start_sample": 6160384,
+      "end_sample": 6225920
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000095.wav",
+      "wet_path": "data/chunks/train/wet_000095.wav",
+      "start_sample": 6225920,
+      "end_sample": 6291456
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000096.wav",
+      "wet_path": "data/chunks/train/wet_000096.wav",
+      "start_sample": 6291456,
+      "end_sample": 6356992
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000097.wav",
+      "wet_path": "data/chunks/train/wet_000097.wav",
+      "start_sample": 6356992,
+      "end_sample": 6422528
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000098.wav",
+      "wet_path": "data/chunks/train/wet_000098.wav",
+      "start_sample": 6422528,
+      "end_sample": 6488064
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000099.wav",
+      "wet_path": "data/chunks/train/wet_000099.wav",
+      "start_sample": 6488064,
+      "end_sample": 6553600
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000100.wav",
+      "wet_path": "data/chunks/train/wet_000100.wav",
+      "start_sample": 6553600,
+      "end_sample": 6619136
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000101.wav",
+      "wet_path": "data/chunks/train/wet_000101.wav",
+      "start_sample": 6619136,
+      "end_sample": 6684672
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000102.wav",
+      "wet_path": "data/chunks/train/wet_000102.wav",
+      "start_sample": 6684672,
+      "end_sample": 6750208
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000103.wav",
+      "wet_path": "data/chunks/train/wet_000103.wav",
+      "start_sample": 6750208,
+      "end_sample": 6815744
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000104.wav",
+      "wet_path": "data/chunks/train/wet_000104.wav",
+      "start_sample": 6815744,
+      "end_sample": 6881280
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000105.wav",
+      "wet_path": "data/chunks/train/wet_000105.wav",
+      "start_sample": 6881280,
+      "end_sample": 6946816
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000106.wav",
+      "wet_path": "data/chunks/train/wet_000106.wav",
+      "start_sample": 6946816,
+      "end_sample": 7012352
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000107.wav",
+      "wet_path": "data/chunks/train/wet_000107.wav",
+      "start_sample": 7012352,
+      "end_sample": 7077888
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000108.wav",
+      "wet_path": "data/chunks/train/wet_000108.wav",
+      "start_sample": 7077888,
+      "end_sample": 7143424
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000109.wav",
+      "wet_path": "data/chunks/train/wet_000109.wav",
+      "start_sample": 7143424,
+      "end_sample": 7208960
+    },
+    {
+      "split": "train",
+      "dry_path": "data/chunks/train/dry_000110.wav",
+      "wet_path": "data/chunks/train/wet_000110.wav",
+      "start_sample": 7208960,
+      "end_sample": 7274496
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000000.wav",
+      "wet_path": "data/chunks/val/wet_000000.wav",
+      "start_sample": 7274496,
+      "end_sample": 7340032
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000001.wav",
+      "wet_path": "data/chunks/val/wet_000001.wav",
+      "start_sample": 7340032,
+      "end_sample": 7405568
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000002.wav",
+      "wet_path": "data/chunks/val/wet_000002.wav",
+      "start_sample": 7405568,
+      "end_sample": 7471104
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000003.wav",
+      "wet_path": "data/chunks/val/wet_000003.wav",
+      "start_sample": 7471104,
+      "end_sample": 7536640
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000004.wav",
+      "wet_path": "data/chunks/val/wet_000004.wav",
+      "start_sample": 7536640,
+      "end_sample": 7602176
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000005.wav",
+      "wet_path": "data/chunks/val/wet_000005.wav",
+      "start_sample": 7602176,
+      "end_sample": 7667712
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000006.wav",
+      "wet_path": "data/chunks/val/wet_000006.wav",
+      "start_sample": 7667712,
+      "end_sample": 7733248
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000007.wav",
+      "wet_path": "data/chunks/val/wet_000007.wav",
+      "start_sample": 7733248,
+      "end_sample": 7798784
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000008.wav",
+      "wet_path": "data/chunks/val/wet_000008.wav",
+      "start_sample": 7798784,
+      "end_sample": 7864320
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000009.wav",
+      "wet_path": "data/chunks/val/wet_000009.wav",
+      "start_sample": 7864320,
+      "end_sample": 7929856
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000010.wav",
+      "wet_path": "data/chunks/val/wet_000010.wav",
+      "start_sample": 7929856,
+      "end_sample": 7995392
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000011.wav",
+      "wet_path": "data/chunks/val/wet_000011.wav",
+      "start_sample": 7995392,
+      "end_sample": 8060928
+    },
+    {
+      "split": "val",
+      "dry_path": "data/chunks/val/dry_000012.wav",
+      "wet_path": "data/chunks/val/wet_000012.wav",
+      "start_sample": 8060928,
+      "end_sample": 8126464
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000000.wav",
+      "wet_path": "data/chunks/test/wet_000000.wav",
+      "start_sample": 8126464,
+      "end_sample": 8192000
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000001.wav",
+      "wet_path": "data/chunks/test/wet_000001.wav",
+      "start_sample": 8192000,
+      "end_sample": 8257536
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000002.wav",
+      "wet_path": "data/chunks/test/wet_000002.wav",
+      "start_sample": 8257536,
+      "end_sample": 8323072
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000003.wav",
+      "wet_path": "data/chunks/test/wet_000003.wav",
+      "start_sample": 8323072,
+      "end_sample": 8388608
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000004.wav",
+      "wet_path": "data/chunks/test/wet_000004.wav",
+      "start_sample": 8388608,
+      "end_sample": 8454144
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000005.wav",
+      "wet_path": "data/chunks/test/wet_000005.wav",
+      "start_sample": 8454144,
+      "end_sample": 8519680
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000006.wav",
+      "wet_path": "data/chunks/test/wet_000006.wav",
+      "start_sample": 8519680,
+      "end_sample": 8585216
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000007.wav",
+      "wet_path": "data/chunks/test/wet_000007.wav",
+      "start_sample": 8585216,
+      "end_sample": 8650752
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000008.wav",
+      "wet_path": "data/chunks/test/wet_000008.wav",
+      "start_sample": 8650752,
+      "end_sample": 8716288
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000009.wav",
+      "wet_path": "data/chunks/test/wet_000009.wav",
+      "start_sample": 8716288,
+      "end_sample": 8781824
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000010.wav",
+      "wet_path": "data/chunks/test/wet_000010.wav",
+      "start_sample": 8781824,
+      "end_sample": 8847360
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000011.wav",
+      "wet_path": "data/chunks/test/wet_000011.wav",
+      "start_sample": 8847360,
+      "end_sample": 8912896
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000012.wav",
+      "wet_path": "data/chunks/test/wet_000012.wav",
+      "start_sample": 8912896,
+      "end_sample": 8978432
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000013.wav",
+      "wet_path": "data/chunks/test/wet_000013.wav",
+      "start_sample": 8978432,
+      "end_sample": 9043968
+    },
+    {
+      "split": "test",
+      "dry_path": "data/chunks/test/dry_000014.wav",
+      "wet_path": "data/chunks/test/wet_000014.wav",
+      "start_sample": 9043968,
+      "end_sample": 9109504
+    }
+  ]
+}

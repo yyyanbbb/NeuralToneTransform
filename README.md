@@ -79,6 +79,36 @@ A2 output:
 - `outputs/a2_baseline/model.nam`
 - `reports/a2_model_inspection.md`, showing whether `SlimmableContainer` appears in the exported `.nam`.
 
+## Data Alignment and Chunking
+
+Run these commands from the repository root in Windows PowerShell. `.venv-a2` is recommended because it already contains `soundfile`, `scipy`, `numpy`, and `torch`.
+
+Align dry/wet audio:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\data\align.py --dry data/raw/baseline_input.wav --wet data/raw/baseline_output.wav --out-dir data/aligned
+```
+
+Generate train/val/test chunks:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\data\chunk_audio.py --dry data/aligned/aligned_dry.wav --wet data/aligned/aligned_wet.wav --out-dir data/chunks --chunk-size 65536 --hop-size 65536 --train-ratio 0.8 --val-ratio 0.1 --test-ratio 0.1
+```
+
+Run the Dataset smoke test:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\data\dataset.py --metadata data/chunks/metadata.json --split train
+```
+
+Verify the full data pipeline:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\scripts\common\verify_data_pipeline.py
+```
+
+The current data processing module covers dry/wet sample-rate checks, cross-correlation delay estimation, automatic trimming, train/val/test chunk generation, and PyTorch Dataset loading.
+
 ## Notes
 
 - A1 and A2 are safer in separate environments.

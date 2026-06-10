@@ -1,26 +1,90 @@
-﻿# STEP3 A2 COMPLETION REPORT
+# STEP3 A2 Completion Report
 
-Status: A2 not completed.
+## Current Status
 
-## Latest Failure
+Status: A2 smoke baseline completed.
 
-- timestamp: 2026-06-10 01:55:20 +08:00
-- failed_command: `.\scripts\a2\run_a2_baseline.ps1`
-- error_summary: 检索不到变量“$LASTEXITCODE”，因为未设置该变量。
-- training_log: logs/a2/a2_training.log
+The A2 baseline has been reproduced at smoke-test level. The exported model was inspected successfully as a SlimmableContainer with 3-channel Lite and 8-channel Full submodels.
 
-## Suggested Next Steps
+## Model Inspection Summary
 
-1. Confirm neural-amp-modeler==0.13.0 supports the current Python version.
-2. Confirm configs/a2_baseline/model_packed.json matches the official PackedWaveNet schema.
-3. Re-run .\scripts\a2\run_a2_baseline.ps1 after resolving the dependency or schema error.
+- Model path: `outputs/a2_baseline/model.nam`
+- Architecture: `SlimmableContainer`
+- Submodels: A2-Lite / 3 channels, A2-Full / 8 channels
+- Inspection: PASS
+- Inspection report: `reports/a2_model_inspection.md`
+- Model size: `308130` bytes
+
+## Packed Config
+
+`scripts/a2/prepare_a2_baseline.py` found and copied the official packed config from the installed package resource:
+
+```text
+nam/train/_resources/config_model_packed.json
+```
+
+The copied config is stored at:
+
+```text
+configs/a2_baseline/model_packed.json
+```
+
+The official config contains `PackedWaveNet`, `channels_3`, `channels_8`, and packed export settings.
+
+## Verification Summary
+
+Latest verification is refreshed by:
+
+```powershell
+.\scripts\a2\finalize_a2_model.ps1
+.\scripts\a2\verify_a2_baseline.ps1
+.\.venv-a2\Scripts\python.exe .\scripts\common\verify_reproducibility.py --target all
+```
+
+Results are recorded below after each validation run.
+
+Latest PowerShell verification result:
+
+```text
+timestamp: 2026-06-10 19:39:51 +08:00
+finalize_a2_model.ps1: PASS
+verify_a2_baseline.ps1 pass_count: 13
+verify_a2_baseline.ps1 fail_count: 0
+verify_a2_baseline.ps1 OVERALL: PASS
+```
+
+Latest shared Python reproducibility result:
+
+```text
+timestamp: 2026-06-10T19:40:59+08:00
+pass_count: 31
+fail_count: 0
+OVERALL: PASS
+```
+
+## Historical Issue
+
+Earlier runs encountered a PowerShell `$LASTEXITCODE` handling issue:
+
+```text
+The variable '$LASTEXITCODE' cannot be retrieved because it has not been set.
+```
+
+This has been moved here as a historical issue and should not be treated as the latest A2 status. The scripts now initialize and read `$global:LASTEXITCODE` when handling external command exit codes.
+
+## Remaining Work
+
+- Run longer A2 training beyond smoke-test epochs.
+- Add formal ESR / MRSTFT evaluation.
+- Compare A1 vs A2-Lite vs A2-Full.
+- Measure CPU usage for Lite and Full inference paths.
 
 
 ## Latest A2 Model Inspection
 
 # A2 Model Inspection
 
-- timestamp: 2026-06-10T01:57:55+08:00
+- timestamp: 2026-06-10T19:39:39+08:00
 - model_path: outputs/a2_baseline/model.nam
 - file_size_bytes: 308130
 - first_32_bytes_hex: 7b2276657273696f6e223a2022302e372e30222c20226d65746164617461223a

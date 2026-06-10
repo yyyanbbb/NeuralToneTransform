@@ -28,7 +28,11 @@ try {
   if (Test-Path $Python) {
     $global:LASTEXITCODE = 0
     $VersionOutput = & $Python ".\scripts\common\print_dependency_versions.py" neural-amp-modeler torch 2>&1
+    $VersionExitCode = $global:LASTEXITCODE
     $VersionOutput | ForEach-Object { Write-LogLine ([string]$_) }
+    if ($VersionExitCode -ne 0) {
+      throw "Dependency version check failed with exit code $VersionExitCode"
+    }
   }
 
   if (-not (Test-Path $OutDir)) {

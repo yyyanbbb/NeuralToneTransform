@@ -103,8 +103,9 @@ try {
 
   $global:LASTEXITCODE = 0
   & ".\scripts\a1\finalize_a1_model.ps1" 2>&1 | Tee-Object -FilePath $TrainingLog -Append
-  if ($global:LASTEXITCODE -ne 0) {
-    throw "A1 finalize step failed"
+  $FinalizeExitCode = $global:LASTEXITCODE
+  if ($FinalizeExitCode -ne 0) {
+    throw "A1 finalize step failed with exit code $FinalizeExitCode"
   }
 
   Write-LogLine -LogPath $TrainingLog -Message "A1 baseline flow finished. Canonical model: $ModelOut"

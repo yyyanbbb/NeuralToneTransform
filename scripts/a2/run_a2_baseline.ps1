@@ -125,6 +125,13 @@ try {
     if (Test-Path $ModelOut) {
       $global:LASTEXITCODE = 0
       & ".\scripts\a2\finalize_a2_model.ps1" 2>&1 | Tee-Object -FilePath $TrainingLog -Append
+      $FinalizeExitCode = $global:LASTEXITCODE
+      if ($FinalizeExitCode -ne 0) {
+        $Message = "A2 finalize step failed with exit code $FinalizeExitCode"
+        Write-LogLine -LogPath $TrainingLog -Message "ERROR: $Message"
+        Add-A2ReportFailure -Command ".\scripts\a2\finalize_a2_model.ps1" -ErrorSummary $Message
+        exit 1
+      }
     }
     exit 0
   }
@@ -139,8 +146,9 @@ try {
 
   $global:LASTEXITCODE = 0
   & ".\scripts\a2\finalize_a2_model.ps1" 2>&1 | Tee-Object -FilePath $TrainingLog -Append
-  if ($global:LASTEXITCODE -ne 0) {
-    Add-A2ReportFailure -Command ".\scripts\a2\finalize_a2_model.ps1" -ErrorSummary "A2 finalize step failed"
+  $FinalizeExitCode = $global:LASTEXITCODE
+  if ($FinalizeExitCode -ne 0) {
+    Add-A2ReportFailure -Command ".\scripts\a2\finalize_a2_model.ps1" -ErrorSummary "A2 finalize step failed with exit code $FinalizeExitCode"
     exit 1
   }
 }
