@@ -1,4 +1,4 @@
-﻿[2026-06-11T00:34:16.4419763+08:00] small train
+﻿[2026-06-11T01:05:57.1406804+08:00] small train
 Command: C:\users\yanbo\desktop\audio black box modeling system\.venv-a2\Scripts\python.exe .\src\ntt\tcn\train.py --model-config configs/tcn_gated/small.json --training-config configs/tcn_gated/training_smoke_small.json
 using device: cpu
 model: GatedTCN-Small

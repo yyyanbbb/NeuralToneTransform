@@ -50,7 +50,7 @@
   "device": "cpu",
   "parameter_count": 25665,
   "receptive_field": 2053,
-  "created_at": "2026-06-10T16:34:18.771667+00:00",
+  "created_at": "2026-06-10T17:05:59.464279+00:00",
   "epochs": [
     {
       "epoch": 1,
@@ -69,5 +69,6 @@
       "is_best": true
     }
   ],
-  "best_val_loss": 0.16336558759212494
+  "best_val_loss": 0.16336558759212494,
+  "training_time_seconds": 1.4763590999646112
 }

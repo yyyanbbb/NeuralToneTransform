@@ -1,0 +1,17 @@
+{
+  "model_name": "A1-baseline",
+  "split": "test",
+  "mode": "prediction",
+  "num_test_chunks": 15,
+  "metadata_path": "data/chunks/metadata.json",
+  "target_path": "data/aligned/aligned_wet.wav",
+  "prediction_path": "outputs/a1_baseline/prediction.wav",
+  "sample_rate": 48000,
+  "device": "cpu",
+  "created_at": "2026-06-10T17:00:20.418017+00:00",
+  "mse": 0.02533065361154172,
+  "mae": 0.09996416705350081,
+  "esr": 1.733798958513393,
+  "mrstft": 1.549927866458893,
+  "snr": -1.9139376856241668
+}

@@ -77,7 +77,8 @@ class TCNComparisonTests(unittest.TestCase):
         self.assertIn("GatedTCN-Large", names)
         medium = next(row for row in rows if row["Model"] == "GatedTCN-Medium")
         self.assertEqual(medium["MSE"], "TBD")
-        self.assertEqual(medium["RTF"], "TBD")
+        self.assertIn("Test MSE", medium)
+        self.assertIn("RTF", medium)
 
 
 class TCNEvaluationUtilityTests(unittest.TestCase):
@@ -125,6 +126,44 @@ class TCNEvaluationUtilityTests(unittest.TestCase):
             self.assertTrue((root / "figures" / "spectrogram_target.png").is_file())
             self.assertIn("TCN Large", result["skipped"])
             self.assertTrue((root / "FIGURE_ANALYSIS.md").is_file())
+
+    def test_evaluate_prediction_file_uses_test_split_only(self) -> None:
+        from src.ntt.evaluation.evaluate_test_split import evaluate_prediction_file
+
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sample_rate = 4096
+            target = np.zeros(4096, dtype=np.float32)
+            prediction = np.zeros(4096, dtype=np.float32)
+            target[2048:4096] = 1.0
+            prediction[2048:4096] = 0.5
+            target_path = root / "target.wav"
+            prediction_path = root / "prediction.wav"
+            metadata_path = root / "metadata.json"
+            sf.write(target_path, target, sample_rate, subtype="FLOAT")
+            sf.write(prediction_path, prediction, sample_rate, subtype="FLOAT")
+            metadata_path.write_text(
+                json.dumps(
+                    {
+                        "chunks": [
+                            {"split": "train", "start_sample": 0, "end_sample": 2048},
+                            {"split": "test", "start_sample": 2048, "end_sample": 4096},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = evaluate_prediction_file(
+                metadata_path=metadata_path,
+                target_path=target_path,
+                prediction_path=prediction_path,
+                model_name="UnitModel",
+            )
+
+            self.assertEqual(result["split"], "test")
+            self.assertEqual(result["num_test_chunks"], 1)
+            self.assertAlmostEqual(result["mse"], 0.25, places=5)
 
 
 if __name__ == "__main__":

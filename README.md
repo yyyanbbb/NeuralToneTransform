@@ -220,6 +220,14 @@ Run formal 20-epoch ablation:
 .\scripts\tcn\run_tcn_ablation.ps1 -ContinueOnError
 ```
 
+Run Medium formal 20-epoch training only:
+
+```powershell
+.\scripts\tcn\run_tcn_ablation.ps1 -SkipSmall -SkipLarge -ContinueOnError
+```
+
+The formal configs keep `num_epochs=20`. With `device=auto`, CUDA is used automatically when available; CPU-only runtimes can be very slow and should keep formal status as pending until the run actually completes.
+
 Formal configs:
 
 - `configs/tcn_gated/training_formal_small.json`
@@ -261,6 +269,66 @@ Generate the full comparison table:
   --tcn-large-pred outputs/tcn_gated/large/prediction.wav `
   --tcn-large-checkpoint outputs/tcn_gated/large/checkpoints/best.pt
 ```
+
+Held-out test evaluation for TCN Medium:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\evaluate_test_split.py `
+  --metadata data/chunks/metadata.json `
+  --tcn-checkpoint outputs/tcn_gated/medium/checkpoints/best.pt `
+  --model-name GatedTCN-Medium `
+  --out reports/test_metrics_tcn_medium.json `
+  --device auto
+```
+
+Held-out test evaluation for A1/A2 predictions:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\evaluate_test_split.py `
+  --metadata data/chunks/metadata.json `
+  --target data/aligned/aligned_wet.wav `
+  --prediction outputs/a1_baseline/prediction.wav `
+  --model-name A1-baseline `
+  --out reports/test_metrics_a1.json
+
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\evaluate_test_split.py `
+  --metadata data/chunks/metadata.json `
+  --target data/aligned/aligned_wet.wav `
+  --prediction outputs/a2_baseline/a2_lite_prediction.wav `
+  --model-name A2-Lite `
+  --out reports/test_metrics_a2_lite.json
+
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\evaluate_test_split.py `
+  --metadata data/chunks/metadata.json `
+  --target data/aligned/aligned_wet.wav `
+  --prediction outputs/a2_baseline/a2_full_prediction.wav `
+  --model-name A2-Full `
+  --out reports/test_metrics_a2_full.json
+```
+
+Benchmark A1/A2 NAM inference RTF:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\inference\benchmark_nam_inference.py `
+  --model outputs/a1_baseline/model.nam `
+  --input data/aligned/aligned_dry.wav `
+  --variant a1 `
+  --out outputs/a1_baseline/benchmark.json
+
+.\.venv-a2\Scripts\python.exe .\scripts\inference\benchmark_nam_inference.py `
+  --model outputs/a2_baseline/model.nam `
+  --input data/aligned/aligned_dry.wav `
+  --variant a2-lite `
+  --out outputs/a2_baseline/a2_lite_benchmark.json
+
+.\.venv-a2\Scripts\python.exe .\scripts\inference\benchmark_nam_inference.py `
+  --model outputs/a2_baseline/model.nam `
+  --input data/aligned/aligned_dry.wav `
+  --variant a2-full `
+  --out outputs/a2_baseline/a2_full_benchmark.json
+```
+
+Final comparison should use held-out test metrics plus RTF. Full aligned-audio metrics are useful diagnostics, but final experiment claims should prioritize `reports/test_metrics_*.json` and benchmark JSON outputs.
 
 ## Evaluation
 

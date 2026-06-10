@@ -2,18 +2,34 @@
 
 ## Current Status
 
-The Custom Gated TCN code path is implemented under `src/ntt/tcn/`. Small, Medium, and Large variants completed CPU smoke ablation runs with training, checkpointing, full-file inference, verification, benchmark output, and comparison-table integration.
+The Custom Gated TCN code path is implemented under `src/ntt/tcn/`. Small, Medium, and Large variants completed CPU smoke ablation runs with training, checkpointing, full-file inference, verification, benchmark output, figure generation, full-file comparison, and held-out test split evaluation.
 
-Formal 20-epoch training pending due to CPU-only runtime.
+Formal training support is implemented through `configs/tcn_gated/training_formal_*.json` and `scripts/tcn/run_tcn_ablation.ps1`.
 
-## Formal Experiment Plan
+Medium 20-epoch formal training pending due to CPU-only runtime.
 
-- Train `GatedTCN-Small`, `GatedTCN-Medium`, and `GatedTCN-Large` for 20 epochs using the formal configs in `configs/tcn_gated/`.
-- Run full-file inference for each variant against `data/aligned/aligned_dry.wav`.
-- Verify outputs with `src/ntt/tcn/verify_tcn.py`.
-- Benchmark each checkpoint for RTF, throughput, and chunk latency.
-- Compare A1, A2-Lite, A2-Full, and all TCN variants in `reports/experiment_comparison.md`.
-- Generate waveform and spectrogram figures under `reports/figures/`.
+## Formal Training
+
+Medium formal config:
+
+- config: `configs/tcn_gated/training_formal_medium.json`
+- epochs: 20
+- batch size: 4
+- device: `auto`
+- max train batches: null
+- max val batches: null
+
+Formal command:
+
+```powershell
+.\scripts\tcn\run_tcn_ablation.ps1 -SkipSmall -SkipLarge -ContinueOnError
+```
+
+Current runtime check:
+
+- `torch`: 2.11.0+cpu
+- CUDA available: false
+- status: Formal 20-epoch training pending due to CPU-only runtime.
 
 ## Model Configurations
 
@@ -23,7 +39,7 @@ Formal 20-epoch training pending due to CPU-only runtime.
 | GatedTCN-Medium | 32 | 20 | 4093 | 167553 | `configs/tcn_gated/medium.json` |
 | GatedTCN-Large | 48 | 22 | 8189 | 412225 | `configs/tcn_gated/large.json` |
 
-Large is designed to exceed the A2 reference receptive field of roughly 6350 samples while remaining small enough for CPU smoke verification.
+Large exceeds the A2 reference receptive field of roughly 6350 samples while remaining small enough for CPU smoke verification.
 
 ## Smoke Training Status
 
@@ -33,35 +49,33 @@ Large is designed to exceed the A2 reference receptive field of roughly 6350 sam
 | GatedTCN-Medium | cpu | 1 | 1 | 1 | 0.123419 | 0.858192 | PASS |
 | GatedTCN-Large | cpu | 1 | 1 | 1 | 0.139288 | 0.103801 | PASS |
 
-Smoke checkpoints:
+## Held-out Test Evaluation
 
-- `outputs/tcn_gated/small/checkpoints/best.pt`
-- `outputs/tcn_gated/medium/checkpoints/best.pt`
-- `outputs/tcn_gated/large/checkpoints/best.pt`
+Held-out test split evaluation support is implemented in `src/ntt/evaluation/evaluate_test_split.py`.
 
-## Formal Training Status
+| Model | Test MSE | Test MAE | Test ESR | Test MRSTFT | Test SNR |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| A1 baseline | 0.0253307 | 0.0999642 | 1.7338 | 1.54993 | -1.91394 |
+| A2-Lite baseline | 0.0161523 | 0.0939756 | 1.08471 | 4.6246 | -0.275191 |
+| A2-Full baseline | 0.0207692 | 0.0924068 | 1.42595 | 2.27191 | -0.982792 |
+| GatedTCN-Small | 0.0154348 | 0.0996688 | 1.08549 | 4.53482 | -0.311414 |
+| GatedTCN-Medium | 0.0294477 | 0.144289 | 2.63712 | 5.13135 | -3.5008 |
+| GatedTCN-Large | 0.0133959 | 0.0873261 | 0.903768 | 4.07872 | 0.448861 |
 
-Formal 20-epoch training pending due to CPU-only runtime.
-
-Formal configs are present:
-
-- `configs/tcn_gated/training_formal_small.json`
-- `configs/tcn_gated/training_formal_medium.json`
-- `configs/tcn_gated/training_formal_large.json`
+These TCN values are from CPU smoke checkpoints, not formal 20-epoch checkpoints.
 
 ## Benchmark Status
 
-| Model | Device | RTF | Samples/s | Avg Chunk Latency ms |
+TCN benchmark support is implemented in `src/ntt/tcn/benchmark.py`. A1/A2 NAM benchmark support is implemented in `scripts/inference/benchmark_nam_inference.py`.
+
+| Model | Device / Env | RTF | Samples/s | Avg Chunk Latency ms |
 | --- | --- | ---: | ---: | ---: |
-| GatedTCN-Small | cpu | 0.073829 | 650154.30 | 400.72 |
+| A1 baseline | `.venv` | 0.0670541 | 715840.39 | 91.00 |
+| A2-Lite baseline | `.venv-a2` | 0.0517085 | 928280.72 | 70.18 |
+| A2-Full baseline | `.venv-a2` | 0.0708378 | 677604.35 | 96.14 |
+| GatedTCN-Small | cpu | 0.0738286 | 650154.30 | 400.72 |
 | GatedTCN-Medium | cpu | 0.178694 | 268615.21 | 970.00 |
 | GatedTCN-Large | cpu | 0.336964 | 142448.60 | 1829.17 |
-
-Benchmark JSON files:
-
-- `outputs/tcn_gated/small/benchmark.json`
-- `outputs/tcn_gated/medium/benchmark.json`
-- `outputs/tcn_gated/large/benchmark.json`
 
 ## Figure Generation Status
 
@@ -82,22 +96,12 @@ Figure notes are in `reports/FIGURE_ANALYSIS.md`.
 
 ## Comparison with A1/A2
 
-`src/ntt/evaluation/compare_models.py` now writes rows for A1 baseline, A2-Lite baseline, A2-Full baseline, GatedTCN-Small, GatedTCN-Medium, and GatedTCN-Large.
-
-Current smoke comparison:
-
-| Model | MSE | MAE | ESR | MRSTFT | SNR | RTF |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| GatedTCN-Small | 0.0206532 | 0.112477 | 1.0597 | 3.90558 | -0.25181 | 0.0738286 |
-| GatedTCN-Medium | 0.032953 | 0.150761 | 1.69079 | 4.25608 | -2.28089 | 0.178694 |
-| GatedTCN-Large | 0.0195586 | 0.102615 | 1.00353 | 3.50763 | -0.0153178 | 0.336964 |
-
-These are smoke-run metrics, not final formal experiment results.
+`src/ntt/evaluation/compare_models.py` now writes rows for A1 baseline, A2-Lite baseline, A2-Full baseline, GatedTCN-Small, GatedTCN-Medium, and GatedTCN-Large. The table includes full-file metrics, held-out test metrics, and RTF.
 
 ## Remaining Work
 
-- run formal 20-epoch training on a CUDA-capable runtime
+- run Medium formal 20-epoch training on a CUDA-capable runtime
+- optionally run Small and Large formal 20-epoch ablations
 - repeat with multiple seeds
-- run Small/Medium/Large ablation on held-out test split
-- run activation and loss ablations
+- compare against A1/A2 using formal TCN checkpoints
 - add subjective listening notes after formal training

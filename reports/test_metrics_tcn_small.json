@@ -1,0 +1,18 @@
+{
+  "model_name": "GatedTCN-Small",
+  "split": "test",
+  "mode": "tcn_checkpoint",
+  "num_test_chunks": 15,
+  "metadata_path": "data/chunks/metadata.json",
+  "checkpoint_path": "outputs/tcn_gated/small/checkpoints/best.pt",
+  "sample_rate": 48000,
+  "device": "cpu",
+  "parameter_count": 25665,
+  "receptive_field": 2053,
+  "created_at": "2026-06-10T17:00:45.319770+00:00",
+  "mse": 0.015434754154627094,
+  "mae": 0.09966878289342238,
+  "esr": 1.0854910727659732,
+  "mrstft": 4.534818506240844,
+  "snr": -0.31141383189226596
+}

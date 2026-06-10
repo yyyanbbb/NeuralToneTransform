@@ -6,6 +6,7 @@ param(
   [switch]$Smoke
 )
 
+Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 $Env:PYTHONIOENCODING = "utf-8"
 $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")

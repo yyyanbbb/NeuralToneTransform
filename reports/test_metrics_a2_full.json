@@ -1,0 +1,17 @@
+{
+  "model_name": "A2-Full",
+  "split": "test",
+  "mode": "prediction",
+  "num_test_chunks": 15,
+  "metadata_path": "data/chunks/metadata.json",
+  "target_path": "data/aligned/aligned_wet.wav",
+  "prediction_path": "outputs/a2_baseline/a2_full_prediction.wav",
+  "sample_rate": 48000,
+  "device": "cpu",
+  "created_at": "2026-06-10T17:00:20.421524+00:00",
+  "mse": 0.0207691671469064,
+  "mae": 0.09240675199156007,
+  "esr": 1.4259534657862838,
+  "mrstft": 2.271914092699687,
+  "snr": -0.9827918219059611
+}

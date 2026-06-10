@@ -1,0 +1,17 @@
+{
+  "model_path": "outputs/a2_baseline/model.nam",
+  "input_path": "data/aligned/aligned_dry.wav",
+  "variant": "a2-full",
+  "model_architecture": "SlimmableContainer submodel channels=8",
+  "sample_rate": 48000,
+  "input_num_samples": 9119986,
+  "output_num_samples": 9119986,
+  "audio_duration_seconds": 189.99970833333333,
+  "inference_time_seconds": 13.459161000035238,
+  "real_time_factor": 0.07083779821610378,
+  "samples_per_second": 677604.3469556626,
+  "average_chunk_latency_ms": 96.13686428596597,
+  "block_size": 65536,
+  "num_chunks": 140,
+  "created_at": "2026-06-10T17:01:39.927344+00:00"
+}

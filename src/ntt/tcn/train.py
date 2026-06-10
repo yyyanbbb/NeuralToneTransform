@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -82,6 +83,7 @@ def run_epoch(
 
 
 def train(model_config_path: str | Path, training_config_path: str | Path) -> dict[str, Any]:
+    training_start = time.perf_counter()
     model_config = load_json(model_config_path)
     training_config = load_json(training_config_path)
     set_seed(training_config.get("seed"))
@@ -225,6 +227,7 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
             )
 
     metrics["best_val_loss"] = best_val_loss
+    metrics["training_time_seconds"] = time.perf_counter() - training_start
     write_json(output_dir / "training_metrics.json", metrics)
     return metrics
 

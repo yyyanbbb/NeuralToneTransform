@@ -1,0 +1,17 @@
+{
+  "model_name": "A2-Lite",
+  "split": "test",
+  "mode": "prediction",
+  "num_test_chunks": 15,
+  "metadata_path": "data/chunks/metadata.json",
+  "target_path": "data/aligned/aligned_wet.wav",
+  "prediction_path": "outputs/a2_baseline/a2_lite_prediction.wav",
+  "sample_rate": 48000,
+  "device": "cpu",
+  "created_at": "2026-06-10T17:00:20.416654+00:00",
+  "mse": 0.016152332449999564,
+  "mae": 0.09397563726330797,
+  "esr": 1.084712195480357,
+  "mrstft": 4.6245958010355634,
+  "snr": -0.2751908478395441
+}

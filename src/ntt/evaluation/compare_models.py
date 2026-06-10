@@ -101,6 +101,35 @@ def benchmark_rtf(variant: str, pred_path: Path | None, checkpoint_path: Path | 
     return "TBD", "benchmark metadata not available"
 
 
+def json_rtf(path: str | Path) -> tuple[str, str]:
+    resolved = resolve_path(path)
+    if resolved is None or not resolved.is_file():
+        return "TBD", "benchmark metadata not available"
+    data = json.loads(resolved.read_text(encoding="utf-8"))
+    return format_optional(data.get("real_time_factor")), "benchmark metadata loaded"
+
+
+def load_test_metrics(path: str | Path) -> tuple[dict[str, str], str]:
+    empty = {
+        "Test MSE": "TBD",
+        "Test MAE": "TBD",
+        "Test ESR": "TBD",
+        "Test MRSTFT": "TBD",
+        "Test SNR": "TBD",
+    }
+    resolved = resolve_path(path)
+    if resolved is None or not resolved.is_file():
+        return empty, "test metrics not available"
+    data = json.loads(resolved.read_text(encoding="utf-8"))
+    return {
+        "Test MSE": format_optional(data.get("mse")),
+        "Test MAE": format_optional(data.get("mae")),
+        "Test ESR": format_optional(data.get("esr")),
+        "Test MRSTFT": format_optional(data.get("mrstft")),
+        "Test SNR": format_optional(data.get("snr")),
+    }, "held-out test metrics loaded"
+
+
 def tcn_variant_row(
     *,
     variant: str,
@@ -124,6 +153,7 @@ def tcn_variant_row(
     receptive_field = metadata.get("receptive_field", "TBD")
     model_name = config.get("model_name", default_name) if isinstance(config, dict) else default_name
     rtf, benchmark_note = benchmark_rtf(variant, pred_path, checkpoint_path)
+    test_values, test_note = load_test_metrics(f"reports/test_metrics_tcn_{variant}.json")
 
     return {
         "Model": model_name,
@@ -140,8 +170,9 @@ def tcn_variant_row(
         "ESR": format_metric(metrics["ESR"]),
         "MRSTFT": format_metric(metrics["MRSTFT"]),
         "SNR": format_metric(metrics["SNR"]),
+        **test_values,
         "RTF": rtf,
-        "Inference Notes": f"{checkpoint_note}; {benchmark_note}; {metric_note}",
+        "Inference Notes": f"{checkpoint_note}; {benchmark_note}; {test_note}; {metric_note}",
     }
 
 
@@ -157,6 +188,12 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
     a1_metrics, a1_note = prediction_metrics(a1_prediction, target_path)
     a2_lite_metrics, a2_lite_note = prediction_metrics(a2_lite_prediction, target_path)
     a2_full_metrics, a2_full_note = prediction_metrics(a2_full_prediction, target_path)
+    a1_test, a1_test_note = load_test_metrics("reports/test_metrics_a1.json")
+    a2_lite_test, a2_lite_test_note = load_test_metrics("reports/test_metrics_a2_lite.json")
+    a2_full_test, a2_full_test_note = load_test_metrics("reports/test_metrics_a2_full.json")
+    a1_rtf, a1_benchmark_note = json_rtf("outputs/a1_baseline/benchmark.json")
+    a2_lite_rtf, a2_lite_benchmark_note = json_rtf("outputs/a2_baseline/a2_lite_benchmark.json")
+    a2_full_rtf, a2_full_benchmark_note = json_rtf("outputs/a2_baseline/a2_full_benchmark.json")
     a2_status = "PASS" if a2_model.is_file() and a2_report.is_file() and "OVERALL: PASS" in a2_report.read_text(encoding="utf-8") else "MISSING"
 
     rows = [
@@ -175,8 +212,9 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "ESR": format_metric(a1_metrics["ESR"]),
             "MRSTFT": format_metric(a1_metrics["MRSTFT"]),
             "SNR": format_metric(a1_metrics["SNR"]),
-            "RTF": "TBD",
-            "Inference Notes": "legacy NAM baseline artifact; " + a1_note,
+            **a1_test,
+            "RTF": a1_rtf,
+            "Inference Notes": "legacy NAM baseline artifact; " + f"{a1_benchmark_note}; {a1_test_note}; {a1_note}",
         },
         {
             "Model": "A2-Lite baseline",
@@ -193,8 +231,9 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "ESR": format_metric(a2_lite_metrics["ESR"]),
             "MRSTFT": format_metric(a2_lite_metrics["MRSTFT"]),
             "SNR": format_metric(a2_lite_metrics["SNR"]),
-            "RTF": "TBD",
-            "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; " + a2_lite_note,
+            **a2_lite_test,
+            "RTF": a2_lite_rtf,
+            "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; {a2_lite_benchmark_note}; {a2_lite_test_note}; " + a2_lite_note,
         },
         {
             "Model": "A2-Full baseline",
@@ -211,8 +250,9 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "ESR": format_metric(a2_full_metrics["ESR"]),
             "MRSTFT": format_metric(a2_full_metrics["MRSTFT"]),
             "SNR": format_metric(a2_full_metrics["SNR"]),
-            "RTF": "TBD",
-            "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; " + a2_full_note,
+            **a2_full_test,
+            "RTF": a2_full_rtf,
+            "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; {a2_full_benchmark_note}; {a2_full_test_note}; " + a2_full_note,
         },
     ]
     medium_pred = getattr(args, "tcn_medium_pred", None) or getattr(args, "custom_tcn_pred", None)
@@ -261,6 +301,11 @@ def markdown_table(rows: list[dict[str, str]]) -> str:
         "ESR",
         "MRSTFT",
         "SNR",
+        "Test MSE",
+        "Test MAE",
+        "Test ESR",
+        "Test MRSTFT",
+        "Test SNR",
         "RTF",
         "Inference Notes",
     ]
@@ -277,8 +322,7 @@ def write_report(rows: list[dict[str, str]], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     content = (
         "# Experiment Comparison\n\n"
-        "This table compares the currently available A1/A2 baseline artifacts and optional custom TCN predictions. "
-        "Audio metrics are reported only when prediction audio is available; otherwise they are marked as TBD.\n\n"
+        "This table compares A1/A2 baselines and custom TCN variants. Full-file metrics use aligned prediction audio when available; held-out test metrics come from `reports/test_metrics_*.json`. Missing metrics remain `TBD`.\n\n"
         + markdown_table(rows)
         + "\n"
     )
