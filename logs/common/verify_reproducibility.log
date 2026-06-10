@@ -1,0 +1,44 @@
+=== NeuralToneTransform Reproducibility Verification ===
+timestamp: 2026-06-10T02:00:56+08:00
+project root: C:\Users\yanbo\Desktop\Audio black box modeling system
+target: all
+
+[A1]
+[PASS] .venv directory exists
+[PASS] requirements-a1.txt exists
+[PASS] baseline input WAV exists
+[PASS] baseline output WAV exists
+[PASS] A1 canonical model exists
+[PASS] logs/a1 directory exists
+[PASS] configs/a1_baseline/data.json exists
+[PASS] configs/a1_baseline/data.json is valid JSON
+[PASS] configs/a1_baseline/data.json does not contain private absolute paths
+[PASS] configs/a1_baseline/model.json exists
+[PASS] configs/a1_baseline/model.json is valid JSON
+[PASS] configs/a1_baseline/model.json does not contain private absolute paths
+[PASS] configs/a1_baseline/learning.json exists
+[PASS] configs/a1_baseline/learning.json is valid JSON
+[PASS] configs/a1_baseline/learning.json does not contain private absolute paths
+
+[A2]
+[PASS] .venv-a2 directory exists
+[PASS] requirements-a2.txt exists
+[PASS] baseline input WAV exists
+[PASS] baseline output WAV exists
+[PASS] A2 canonical model exists
+[PASS] logs/a2 directory exists
+[PASS] A2 inspection report exists
+[PASS] configs/a2_baseline/data.json exists
+[PASS] configs/a2_baseline/data.json is valid JSON
+[PASS] configs/a2_baseline/data.json does not contain private absolute paths
+[PASS] configs/a2_baseline/model_packed.json exists
+[PASS] configs/a2_baseline/model_packed.json is valid JSON
+[PASS] configs/a2_baseline/model_packed.json does not contain private absolute paths
+[PASS] configs/a2_baseline/learning.json exists
+[PASS] configs/a2_baseline/learning.json is valid JSON
+[PASS] configs/a2_baseline/learning.json does not contain private absolute paths
+
+=== Summary ===
+pass_count: 31
+fail_count: 0
+OVERALL: PASS

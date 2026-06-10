@@ -2,100 +2,87 @@
 
 ## Project Overview
 
-NeuralToneTransform is a deep-learning audio black-box modeling project focused on learning tone transformations from paired dry and processed audio. The current milestone is to reproduce the official Neural Amp Modeler (NAM) baseline first, then extend the repository with in-house TCN, WaveNet, and LSTM model development.
+NeuralToneTransform is a neural black-box modeling project for guitar and bass amplifier, cabinet, and effects-chain tone transformations. The current reproduction route is:
 
-## Current Status
+1. reproduce A1 / legacy NAM WaveNet baseline;
+2. reproduce A2 / PackedWaveNet baseline;
+3. build custom lightweight models and compare experiments.
 
-- Step 1: Environment setup completed.
-- Step 2: Official NAM baseline completed.
-- Canonical NAM artifact available at `outputs/nam_baseline/model.nam`.
+## Roadmap
+
+- Step 1: Environment setup
+- Step 2: A1 / legacy NAM baseline
+- Step 3: A2 / PackedWaveNet baseline
+- Step 4: Data alignment and chunking
+- Step 5: Custom lightweight model
+- Step 6: Evaluation and comparison
 
 ## Repository Structure
 
-- `scripts/`
-  Windows PowerShell entry points and Python utilities for environment setup, baseline preparation, training, finalization, and reproducibility verification.
-- `configs/nam_baseline/`
-  Generated NAM baseline configuration files: `data.json`, `model.json`, and `learning.json`.
-- `data/raw/`
-  Small baseline WAV files and smoke-test audio used for environment and NAM baseline validation.
-- `outputs/nam_baseline/`
-  Canonical baseline artifact (`model.nam`) plus official NAM training output folders.
-- `reports/`
-  Completion report, notes, and generated plots such as `waveform_smoke.png`.
-- `logs/`
-  Run logs for environment checks, baseline preparation, baseline training, and model finalization.
+- `configs/a1_baseline/`
+  A1 legacy NAM config files: `data.json`, `model.json`, and `learning.json`.
+- `configs/a2_baseline/`
+  A2 config files: `data.json`, `model_packed.json`, and `learning.json`.
+- `outputs/a1_baseline/`
+  Canonical A1 artifact at `model.nam` plus A1 run outputs.
+- `outputs/a2_baseline/`
+  Canonical A2 artifact at `model.nam`, extracted Lite/Full directories, and A2 run outputs.
+- `scripts/a1/`
+  Windows PowerShell and Python entry points for preparing, training, finalizing, and verifying A1.
+- `scripts/a2/`
+  Windows PowerShell and Python entry points for preparing, training, inspecting, finalizing, and verifying A2.
+- `scripts/common/`
+  Shared dependency, audio-pair, and reproducibility verification helpers.
+- `src/ntt/`
+  Project utility package for data preparation, evaluation, and path/audio helpers.
 
-## Installation
+The original `configs/nam_baseline/`, `outputs/nam_baseline/`, and Step 2 scripts are preserved as legacy proof artifacts. New work should use the A1/A2 directories.
 
-Run the following commands from the repository root in Windows PowerShell:
+## How to Run A1
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-## Environment Check
-
-Run the Python environment check directly:
+Run from the repository root in Windows PowerShell:
 
 ```powershell
-python scripts/check_env.py
+.\scripts\a1\run_a1_baseline.ps1
+.\scripts\a1\verify_a1_baseline.ps1
 ```
 
-This command prints status to the terminal and also writes `logs/step1_env_check.log`.
-
-## Run Official NAM Baseline
-
-Prepare baseline audio/configs and launch the official NAM baseline trainer:
+To reuse the already trained baseline model without rerunning training:
 
 ```powershell
-.\scripts\run_step2_nam_baseline.ps1
+.\scripts\a1\run_a1_baseline.ps1 -SkipTrain
 ```
 
-This script writes:
+## How to Run A2
 
-- `logs/step2_prepare_nam_baseline.log`
-- `logs/step2_nam_training.log`
-
-## Finalize Existing NAM Model
-
-If you already have a trained NAM artifact and want to refresh the canonical archive path:
+Run from the repository root in Windows PowerShell:
 
 ```powershell
-.\scripts\finalize_step2_without_rerun.ps1
+.\scripts\a2\run_a2_baseline.ps1
+.\scripts\a2\verify_a2_baseline.ps1
 ```
 
-This script writes `logs/step2_finalize_model.log`.
+To create `.venv-a2`, install A2 dependencies, and generate configs without training:
+
+```powershell
+.\scripts\a2\run_a2_baseline.ps1 -SkipTrain
+```
 
 ## Expected Outputs
 
-After a successful Step 1 + Step 2 baseline run, the repository should contain:
+A1 output:
 
-- `data/raw/baseline_input.wav`
-- `data/raw/baseline_output.wav`
-- `configs/nam_baseline/data.json`
-- `configs/nam_baseline/model.json`
-- `configs/nam_baseline/learning.json`
-- `outputs/nam_baseline/model.nam`
-- `reports/STEP1_STEP2_COMPLETION_REPORT.md`
-- `logs/step1_env_check.log`
-- `logs/step2_nam_training.log`
+- `outputs/a1_baseline/model.nam`
 
-## Reproducibility Notes
+A2 output:
 
-- `scripts/prepare_nam_baseline.py` regenerates the NAM baseline configs for the current machine and keeps committed config paths free of personal absolute paths.
-- `configs/nam_baseline/data.json` is expected to use repository-relative audio paths.
-- Large user datasets, long audio captures, checkpoint dumps, and experimental weights should not be committed directly to GitHub.
-- The current repository keeps only the small baseline proof artifacts required to show that the official NAM baseline has already run successfully.
+- `outputs/a2_baseline/model.nam`
+- `reports/a2_model_inspection.md`, showing whether `SlimmableContainer` appears in the exported `.nam`.
 
-## Reproduction Checklist
+## Notes
 
-Use the built-in verification script after setup or after rerunning the baseline:
-
-```powershell
-.\scripts\verify_reproducibility.ps1
-```
-
-It checks the virtual environment, core imports, config hygiene, baseline WAV files, canonical model output, and required logs, then prints an overall PASS/FAIL summary.
+- A1 and A2 are safer in separate environments.
+- A1 keeps `neural-amp-modeler==0.12.2` because that baseline has already been reproduced.
+- A2 targets `neural-amp-modeler==0.13.0`.
+- Do not commit large datasets, long audio files, checkpoint dumps, or bulk training outputs to GitHub.
+- Keep only small proof artifacts, required configs, reports, and final small baseline models when appropriate.

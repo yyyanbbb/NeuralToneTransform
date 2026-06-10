@@ -1,0 +1,20 @@
+{
+  "_notes": [
+    "A2 PackedWaveNet baseline data config; reuses A1 baseline audio pair."
+  ],
+  "train": {
+    "start_seconds": null,
+    "stop_seconds": -9.0,
+    "ny": 8192
+  },
+  "validation": {
+    "start_seconds": -9.0,
+    "stop_seconds": null,
+    "ny": null
+  },
+  "common": {
+    "x_path": "data/raw/baseline_input.wav",
+    "y_path": "data/raw/baseline_output.wav",
+    "delay": 0
+  }
+}

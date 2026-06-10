@@ -1,5 +1,6 @@
 # Python virtual environment
 .venv/
+.venv-a2/
 venv/
 env/
 
@@ -18,6 +19,18 @@ checkpoints/
 
 # Training runs
 runs/
+**/runs/
+**/checkpoints/
+lightning_logs/
+events.out.tfevents.*
+outputs/**/lightning_logs/
+outputs/**/checkpoints/
+outputs/experiments/
+outputs/a1_baseline/[0-9]*/
+outputs/a2_baseline/[0-9]*/
+outputs/a2_baseline/**/*.ckpt
+outputs/a2_baseline/**/*.pt
+outputs/a2_baseline/**/*.pth
 
 # Jupyter
 .ipynb_checkpoints/
@@ -43,10 +56,11 @@ build/
 
 # Logs
 logs/*.tmp
+logs/**/*.tmp
+logs/**/*.bak
 
 # Future large user data and experiment outputs should not go to GitHub.
 # Keep the current small baseline proof artifacts in data/raw/ and outputs/nam_baseline/.
 data/user_raw/
 data/user_aligned/
 data/user_chunks/
-outputs/experiments/

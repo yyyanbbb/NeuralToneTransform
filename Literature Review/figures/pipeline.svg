@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="330" viewBox="0 0 900 330">
+<style>
+            text{font-family:Arial,Helvetica,sans-serif;fill:#263238}
+            .title{font-size:20px;font-weight:700}
+            .subtitle{font-size:12px;fill:#607D8B}
+            .label{font-size:13px;font-weight:700}
+            .body{font-size:12px;fill:#455A64}
+            .panel{font-size:15px;font-weight:700}
+            </style>
+<rect x="0" y="0" width="900" height="330" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.0"/>
+<text x="30" y="38" class="panel" text-anchor="start">a</text>
+<text x="58" y="38" class="title" text-anchor="start">Black-box tone-modelling pipeline</text>
+<text x="58" y="62" class="subtitle" text-anchor="start">A paired dry/wet workflow links data capture, alignment, learning and evaluation.</text>
+<rect x="45" y="105" width="145" height="78" rx="10" fill="#E7F0FA" stroke="#0F4D92" stroke-width="1.2"/>
+<circle cx="65" cy="127" r="12" fill="#FFFFFF" stroke="#0F4D92" stroke-width="1"/>
+<text x="65" y="131" class="label" text-anchor="middle">1</text>
+<text x="87" y="131" class="label" text-anchor="start">Dry input</text>
+<text x="87" y="153" class="body" text-anchor="start">source performance</text>
+<text x="87" y="169" class="body" text-anchor="start">or test signal</text>
+<rect x="225" y="105" width="155" height="78" rx="10" fill="#F8EBCB" stroke="#A76F16" stroke-width="1.2"/>
+<circle cx="245" cy="127" r="12" fill="#FFFFFF" stroke="#A76F16" stroke-width="1"/>
+<text x="245" y="131" class="label" text-anchor="middle">2</text>
+<text x="267" y="131" class="label" text-anchor="start">Target device</text>
+<text x="267" y="153" class="body" text-anchor="start">amplifier, pedal,</text>
+<text x="267" y="169" class="body" text-anchor="start">cabinet or plugin</text>
+<rect x="415" y="105" width="145" height="78" rx="10" fill="#F7E5E2" stroke="#A6403A" stroke-width="1.2"/>
+<circle cx="435" cy="127" r="12" fill="#FFFFFF" stroke="#A6403A" stroke-width="1"/>
+<text x="435" y="131" class="label" text-anchor="middle">3</text>
+<text x="457" y="131" class="label" text-anchor="start">Wet output</text>
+<text x="457" y="153" class="body" text-anchor="start">recorded target</text>
+<text x="457" y="169" class="body" text-anchor="start">tone response</text>
+<rect x="595" y="105" width="190" height="78" rx="10" fill="#E5F4F4" stroke="#2C7A7B" stroke-width="1.2"/>
+<circle cx="615" cy="127" r="12" fill="#FFFFFF" stroke="#2C7A7B" stroke-width="1"/>
+<text x="615" y="131" class="label" text-anchor="middle">4</text>
+<text x="637" y="131" class="label" text-anchor="start">Alignment</text>
+<text x="637" y="153" class="body" text-anchor="start">sample delay</text>
+<text x="637" y="169" class="body" text-anchor="start">estimated and trimmed</text>
+<rect x="120" y="225" width="150" height="72" rx="10" fill="#F6F8FA" stroke="#607D8B" stroke-width="1.2"/>
+<circle cx="140" cy="247" r="12" fill="#FFFFFF" stroke="#607D8B" stroke-width="1"/>
+<text x="140" y="251" class="label" text-anchor="middle">5</text>
+<text x="162" y="251" class="label" text-anchor="start">Chunking</text>
+<text x="162" y="273" class="body" text-anchor="start">causal windows</text>
+<text x="162" y="289" class="body" text-anchor="start">and data splits</text>
+<rect x="315" y="225" width="160" height="72" rx="10" fill="#ECE9F8" stroke="#5B4DA3" stroke-width="1.2"/>
+<circle cx="335" cy="247" r="12" fill="#FFFFFF" stroke="#5B4DA3" stroke-width="1"/>
+<text x="335" y="251" class="label" text-anchor="middle">6</text>
+<text x="357" y="251" class="label" text-anchor="start">Training</text>
+<text x="357" y="273" class="body" text-anchor="start">LSTM, TCN,</text>
+<text x="357" y="289" class="body" text-anchor="start">WaveNet or NAM</text>
+<rect x="520" y="225" width="150" height="72" rx="10" fill="#E7F0FA" stroke="#0F4D92" stroke-width="1.2"/>
+<circle cx="540" cy="247" r="12" fill="#FFFFFF" stroke="#0F4D92" stroke-width="1"/>
+<text x="540" y="251" class="label" text-anchor="middle">7</text>
+<text x="562" y="251" class="label" text-anchor="start">Inference</text>
+<text x="562" y="273" class="body" text-anchor="start">latency-aware</text>
+<text x="562" y="289" class="body" text-anchor="start">causal processing</text>
+<rect x="715" y="225" width="135" height="72" rx="10" fill="#F7E5E2" stroke="#A6403A" stroke-width="1.2"/>
+<circle cx="735" cy="247" r="12" fill="#FFFFFF" stroke="#A6403A" stroke-width="1"/>
+<text x="735" y="251" class="label" text-anchor="middle">8</text>
+<text x="757" y="251" class="label" text-anchor="start">Evaluation</text>
+<text x="757" y="273" class="body" text-anchor="start">ESR, spectra,</text>
+<text x="757" y="289" class="body" text-anchor="start">latency and ABX</text>
+<line x1="190" y1="144" x2="225" y2="144" stroke="#90A4AE" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="225,144 216,139 216,149" fill="#90A4AE" stroke="#90A4AE" stroke-width="1"/>
+<line x1="380" y1="144" x2="415" y2="144" stroke="#90A4AE" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="415,144 406,139 406,149" fill="#90A4AE" stroke="#90A4AE" stroke-width="1"/>
+<line x1="560" y1="144" x2="595" y2="144" stroke="#90A4AE" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="595,144 586,139 586,149" fill="#90A4AE" stroke="#90A4AE" stroke-width="1"/>
+<line x1="690" y1="183" x2="195" y2="225" stroke="#90A4AE" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="195,225 204,220 204,230" fill="#90A4AE" stroke="#90A4AE" stroke-width="1"/>
+<line x1="270" y1="261" x2="315" y2="261" stroke="#90A4AE" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="315,261 306,256 306,266" fill="#90A4AE" stroke="#90A4AE" stroke-width="1"/>
+<line x1="475" y1="261" x2="520" y2="261" stroke="#90A4AE" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="520,261 511,256 511,266" fill="#90A4AE" stroke="#90A4AE" stroke-width="1"/>
+<line x1="670" y1="261" x2="715" y2="261" stroke="#90A4AE" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="715,261 706,256 706,266" fill="#90A4AE" stroke="#90A4AE" stroke-width="1"/>
+<text x="45" y="318" class="subtitle" text-anchor="start">Design note: this is a planned methodology diagram, not a claim of completed system performance.</text>
+</svg>
