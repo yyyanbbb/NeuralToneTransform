@@ -1,0 +1,5 @@
+﻿[2026-06-11T00:34:51.3827511+08:00] medium infer
+Command: C:\users\yanbo\desktop\audio black box modeling system\.venv-a2\Scripts\python.exe .\src\ntt\tcn\infer.py --checkpoint outputs\tcn_gated\medium\checkpoints\best.pt --input data/aligned/aligned_dry.wav --output outputs\tcn_gated\medium\prediction.wav
+using device: cpu
+prediction audio: outputs/tcn_gated/medium/prediction.wav
+inference metadata: outputs/tcn_gated/medium/inference_metadata.json

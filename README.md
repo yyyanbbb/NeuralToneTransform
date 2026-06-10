@@ -167,7 +167,15 @@ If the local NAM Python API cannot run offline inference, the scripts fail and w
 
 `Custom Gated TCN` is the self-developed model path for neural tone transformation. It uses causal dilated TCN blocks with gated tanh-sigmoid activations, residual connections, and skip aggregation to map dry audio to predicted wet audio. A1 and A2 remain reference baselines; the custom TCN is the project path for approaching their tone-modeling quality with our own architecture.
 
-Train the medium model:
+The TCN ablation has three variants:
+
+- `GatedTCN-Small`: 16 residual/skip channels, 12 layers, 2053-sample receptive field.
+- `GatedTCN-Medium`: 32 residual/skip channels, 20 layers, 4093-sample receptive field.
+- `GatedTCN-Large`: 48 residual/skip channels, 22 layers, 8189-sample receptive field.
+
+Large is designed to exceed the A2 reference receptive field of roughly 6350 samples while still supporting CPU smoke runs.
+
+Train the medium model directly:
 
 ```powershell
 .\.venv-a2\Scripts\python.exe .\src\ntt\tcn\train.py --model-config configs/tcn_gated/medium.json --training-config configs/tcn_gated/training.json
@@ -199,6 +207,60 @@ Compare with A1/A2:
 ```
 
 The training and inference scripts use `device=auto` by default. They use CUDA automatically when `torch.cuda.is_available()` is true, otherwise they fall back to CPU. CUDA is supported but not required.
+
+Run smoke ablation for Small/Medium/Large:
+
+```powershell
+.\scripts\tcn\run_tcn_ablation.ps1 -Smoke -ContinueOnError
+```
+
+Run formal 20-epoch ablation:
+
+```powershell
+.\scripts\tcn\run_tcn_ablation.ps1 -ContinueOnError
+```
+
+Formal configs:
+
+- `configs/tcn_gated/training_formal_small.json`
+- `configs/tcn_gated/training_formal_medium.json`
+- `configs/tcn_gated/training_formal_large.json`
+
+Benchmark inference speed:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\tcn\benchmark.py --checkpoint outputs/tcn_gated/medium/checkpoints/best.pt --input data/aligned/aligned_dry.wav --device auto
+```
+
+Generate waveform and spectrogram figures:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\plot_comparison.py `
+  --target data/aligned/aligned_wet.wav `
+  --a1-pred outputs/a1_baseline/prediction.wav `
+  --a2-lite-pred outputs/a2_baseline/a2_lite_prediction.wav `
+  --a2-full-pred outputs/a2_baseline/a2_full_prediction.wav `
+  --tcn-small-pred outputs/tcn_gated/small/prediction.wav `
+  --tcn-medium-pred outputs/tcn_gated/medium/prediction.wav `
+  --tcn-large-pred outputs/tcn_gated/large/prediction.wav `
+  --out-dir reports/figures
+```
+
+Generate the full comparison table:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\compare_models.py `
+  --target data/aligned/aligned_wet.wav `
+  --a1-pred outputs/a1_baseline/prediction.wav `
+  --a2-lite-pred outputs/a2_baseline/a2_lite_prediction.wav `
+  --a2-full-pred outputs/a2_baseline/a2_full_prediction.wav `
+  --tcn-small-pred outputs/tcn_gated/small/prediction.wav `
+  --tcn-small-checkpoint outputs/tcn_gated/small/checkpoints/best.pt `
+  --tcn-medium-pred outputs/tcn_gated/medium/prediction.wav `
+  --tcn-medium-checkpoint outputs/tcn_gated/medium/checkpoints/best.pt `
+  --tcn-large-pred outputs/tcn_gated/large/prediction.wav `
+  --tcn-large-checkpoint outputs/tcn_gated/large/checkpoints/best.pt
+```
 
 ## Evaluation
 

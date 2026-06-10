@@ -1,0 +1,7 @@
+﻿[2026-06-11T00:35:28.6274725+08:00] large train
+Command: C:\users\yanbo\desktop\audio black box modeling system\.venv-a2\Scripts\python.exe .\src\ntt\tcn\train.py --model-config configs/tcn_gated/large.json --training-config configs/tcn_gated/training_smoke_large.json
+using device: cpu
+model: GatedTCN-Large
+parameter count: 412225
+receptive field: 8189 samples
+epoch 1/1 train total=0.139288 mse=0.0258477 esr=1.10395 mrstft=3.04475 val total=0.103801 mse=0.0022015 esr=0.982726 mrstft=3.32719

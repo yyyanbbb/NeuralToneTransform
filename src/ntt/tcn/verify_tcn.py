@@ -25,7 +25,18 @@ def verify(output_dir: str | Path) -> bool:
     resolved_output = resolve_path(output_dir)
     results: list[tuple[str, bool, str]] = []
     config_dir = resolve_path("configs/tcn_gated")
-    for config_name in ("small.json", "medium.json", "training.json"):
+    for config_name in (
+        "small.json",
+        "medium.json",
+        "large.json",
+        "training.json",
+        "training_formal_small.json",
+        "training_formal_medium.json",
+        "training_formal_large.json",
+        "training_smoke_small.json",
+        "training_smoke_medium.json",
+        "training_smoke_large.json",
+    ):
         check_file(config_dir / config_name, f"config {config_name}", results)
 
     checkpoint_path = resolved_output / "checkpoints" / "best.pt"

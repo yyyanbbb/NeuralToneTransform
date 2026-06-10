@@ -7,7 +7,7 @@ import torch
 from torch import nn
 from torch.optim import Optimizer
 
-from src.ntt.tcn.utils import resolve_path
+from src.ntt.tcn.utils import resolve_path, sanitize_paths_for_json
 
 
 def checkpoint_payload(
@@ -25,13 +25,13 @@ def checkpoint_payload(
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict() if optimizer is not None else None,
         "epoch": epoch,
-        "config": config,
+        "config": sanitize_paths_for_json(config),
         "best_val_loss": best_val_loss,
         "parameter_count": parameter_count,
         "receptive_field": receptive_field,
     }
     if training_config is not None:
-        payload["training_config"] = training_config
+        payload["training_config"] = sanitize_paths_for_json(training_config)
     return payload
 
 

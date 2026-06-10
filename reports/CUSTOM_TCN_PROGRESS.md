@@ -2,62 +2,102 @@
 
 ## Current Status
 
-The Custom Gated TCN implementation is present under `src/ntt/tcn/`. A CPU smoke training run completed with the medium model, produced `best.pt` and `last.pt`, and full-file chunked inference generated `outputs/tcn_gated/medium/prediction.wav`.
+The Custom Gated TCN code path is implemented under `src/ntt/tcn/`. Small, Medium, and Large variants completed CPU smoke ablation runs with training, checkpointing, full-file inference, verification, benchmark output, and comparison-table integration.
 
-The run used `configs/tcn_gated/training_smoke.json` because the full `configs/tcn_gated/training.json` medium epoch was too slow in this CPU-only environment. The requested formal training config remains unchanged for longer runs.
+Formal 20-epoch training pending due to CPU-only runtime.
 
-## Architecture
+## Formal Experiment Plan
 
-- causal dilated convolution with explicit left-only padding
-- gated tanh-sigmoid activation in `GatedTCNBlock`
-- residual connection inside each block
-- skip connection aggregation across all blocks
-- receptive field: 4093 samples for `GatedTCN-Medium`
-- parameter count: 167553 trainable parameters
+- Train `GatedTCN-Small`, `GatedTCN-Medium`, and `GatedTCN-Large` for 20 epochs using the formal configs in `configs/tcn_gated/`.
+- Run full-file inference for each variant against `data/aligned/aligned_dry.wav`.
+- Verify outputs with `src/ntt/tcn/verify_tcn.py`.
+- Benchmark each checkpoint for RTF, throughput, and chunk latency.
+- Compare A1, A2-Lite, A2-Full, and all TCN variants in `reports/experiment_comparison.md`.
+- Generate waveform and spectrogram figures under `reports/figures/`.
 
-## Training
+## Model Configurations
 
-- device: cpu
-- epochs: 1 smoke epoch
-- batch size: 1
-- train batches: 1
-- val batches: 1
-- loss weights: MSE 1.0, ESR 0.1, MRSTFT 0.001
-- train total loss: 0.12341918796300888
-- train MSE: 0.024810779839754105
-- train ESR: 0.9561054706573486
-- train MRSTFT: 2.9978506565093994
-- val total loss: 0.8581922650337219
-- val MSE: 0.01866505667567253
-- val ESR: 8.331891059875488
-- val MRSTFT: 6.338040828704834
-- best checkpoint: `outputs/tcn_gated/medium/checkpoints/best.pt`
+| Model | Channels | Layers | Receptive Field | Parameters | Config |
+| --- | ---: | ---: | ---: | ---: | --- |
+| GatedTCN-Small | 16 | 12 | 2053 | 25665 | `configs/tcn_gated/small.json` |
+| GatedTCN-Medium | 32 | 20 | 4093 | 167553 | `configs/tcn_gated/medium.json` |
+| GatedTCN-Large | 48 | 22 | 8189 | 412225 | `configs/tcn_gated/large.json` |
 
-## Inference
+Large is designed to exceed the A2 reference receptive field of roughly 6350 samples while remaining small enough for CPU smoke verification.
 
-- input path: `data/aligned/aligned_dry.wav`
-- output path: `outputs/tcn_gated/medium/prediction.wav`
-- prediction length: 9119986 samples
-- sample rate: 48000 Hz
-- device: cpu
-- chunk size: 262144 samples
+## Smoke Training Status
+
+| Model | Device | Epochs | Train Batches | Val Batches | Train Loss | Val Loss | Status |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| GatedTCN-Small | cpu | 1 | 1 | 1 | 0.198326 | 0.163366 | PASS |
+| GatedTCN-Medium | cpu | 1 | 1 | 1 | 0.123419 | 0.858192 | PASS |
+| GatedTCN-Large | cpu | 1 | 1 | 1 | 0.139288 | 0.103801 | PASS |
+
+Smoke checkpoints:
+
+- `outputs/tcn_gated/small/checkpoints/best.pt`
+- `outputs/tcn_gated/medium/checkpoints/best.pt`
+- `outputs/tcn_gated/large/checkpoints/best.pt`
+
+## Formal Training Status
+
+Formal 20-epoch training pending due to CPU-only runtime.
+
+Formal configs are present:
+
+- `configs/tcn_gated/training_formal_small.json`
+- `configs/tcn_gated/training_formal_medium.json`
+- `configs/tcn_gated/training_formal_large.json`
+
+## Benchmark Status
+
+| Model | Device | RTF | Samples/s | Avg Chunk Latency ms |
+| --- | --- | ---: | ---: | ---: |
+| GatedTCN-Small | cpu | 0.073829 | 650154.30 | 400.72 |
+| GatedTCN-Medium | cpu | 0.178694 | 268615.21 | 970.00 |
+| GatedTCN-Large | cpu | 0.336964 | 142448.60 | 1829.17 |
+
+Benchmark JSON files:
+
+- `outputs/tcn_gated/small/benchmark.json`
+- `outputs/tcn_gated/medium/benchmark.json`
+- `outputs/tcn_gated/large/benchmark.json`
+
+## Figure Generation Status
+
+Generated under `reports/figures/`:
+
+- `waveform_overlay.png`
+- `error_waveform.png`
+- `spectrogram_target.png`
+- `spectrogram_a1.png`
+- `spectrogram_a2_lite.png`
+- `spectrogram_a2_full.png`
+- `spectrogram_tcn_small.png`
+- `spectrogram_tcn_medium.png`
+- `spectrogram_tcn_large.png`
+- `spectrogram_error_tcn_medium.png`
+
+Figure notes are in `reports/FIGURE_ANALYSIS.md`.
 
 ## Comparison with A1/A2
 
-`src/ntt/evaluation/compare_models.py` now accepts Custom TCN arguments and writes a `GatedTCN-Medium` row to `reports/experiment_comparison.md` with MSE, MAE, ESR, MRSTFT, SNR, parameter count, and receptive field when the prediction and checkpoint are available.
+`src/ntt/evaluation/compare_models.py` now writes rows for A1 baseline, A2-Lite baseline, A2-Full baseline, GatedTCN-Small, GatedTCN-Medium, and GatedTCN-Large.
 
 Current smoke comparison:
 
-- MSE: 0.032953
-- MAE: 0.150761
-- ESR: 1.69079
-- MRSTFT: 4.25608
-- SNR: -2.28089 dB
+| Model | MSE | MAE | ESR | MRSTFT | SNR | RTF |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GatedTCN-Small | 0.0206532 | 0.112477 | 1.0597 | 3.90558 | -0.25181 | 0.0738286 |
+| GatedTCN-Medium | 0.032953 | 0.150761 | 1.69079 | 4.25608 | -2.28089 | 0.178694 |
+| GatedTCN-Large | 0.0195586 | 0.102615 | 1.00353 | 3.50763 | -0.0153178 | 0.336964 |
+
+These are smoke-run metrics, not final formal experiment results.
 
 ## Remaining Work
 
-- train for more epochs
-- tune model size
-- run Small/Medium/Large ablation
-- run activation/loss ablation
-- add inference speed benchmark
+- run formal 20-epoch training on a CUDA-capable runtime
+- repeat with multiple seeds
+- run Small/Medium/Large ablation on held-out test split
+- run activation and loss ablations
+- add subjective listening notes after formal training

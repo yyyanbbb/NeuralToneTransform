@@ -1,0 +1,16 @@
+﻿[2026-06-11T00:34:29.6055888+08:00] small verify
+Command: C:\users\yanbo\desktop\audio black box modeling system\.venv-a2\Scripts\python.exe .\src\ntt\tcn\verify_tcn.py --output-dir outputs/tcn_gated/small
+PASS config small.json: configs/tcn_gated/small.json
+PASS config medium.json: configs/tcn_gated/medium.json
+PASS config training.json: configs/tcn_gated/training.json
+PASS best checkpoint: outputs/tcn_gated/small/checkpoints/best.pt
+PASS last checkpoint: outputs/tcn_gated/small/checkpoints/last.pt
+PASS prediction.wav: outputs/tcn_gated/small/prediction.wav
+PASS training_metrics.json: outputs/tcn_gated/small/training_metrics.json
+PASS inference_metadata.json: outputs/tcn_gated/small/inference_metadata.json
+PASS prediction sample rate matches dry input: prediction=48000, dry=48000
+PASS prediction length is reasonable: prediction=9119986, dry=9119986
+PASS prediction contains no NaN/Inf: samples=9119986
+PASS parameter_count recorded: 25665
+PASS receptive_field recorded: 2053
+PASS summary: 13/13 checks passed

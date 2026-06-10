@@ -15,7 +15,16 @@ from src.ntt.data.dataset import PairedAudioChunkDataset
 from src.ntt.tcn.checkpoint import save_checkpoint
 from src.ntt.tcn.losses import CompositeToneLoss
 from src.ntt.tcn.model import GatedTCN
-from src.ntt.tcn.utils import created_at, load_json, resolve_path, select_device, set_seed, write_json
+from src.ntt.tcn.utils import (
+    created_at,
+    load_json,
+    resolve_path,
+    sanitize_paths_for_json,
+    select_device,
+    set_seed,
+    to_repo_relative,
+    write_json,
+)
 
 
 def build_loss(config: dict[str, Any]) -> CompositeToneLoss:
@@ -113,11 +122,15 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
     checkpoint_dir = output_dir / "checkpoints"
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
     best_val_loss = float("inf")
+    json_model_config = sanitize_paths_for_json(model_config)
+    json_training_config = sanitize_paths_for_json(training_config)
     metrics: dict[str, Any] = {
-        "model_config_path": str(resolve_path(model_config_path)),
-        "training_config_path": str(resolve_path(training_config_path)),
-        "model_config": model_config,
-        "training_config": training_config,
+        "model_config_path": to_repo_relative(model_config_path),
+        "training_config_path": to_repo_relative(training_config_path),
+        "metadata_path": to_repo_relative(training_config["metadata_path"]),
+        "output_dir": to_repo_relative(output_dir),
+        "model_config": json_model_config,
+        "training_config": json_training_config,
         "device": device.type,
         "parameter_count": parameter_count,
         "receptive_field": receptive_field,
@@ -180,11 +193,11 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
             model=model,
             optimizer=optimizer,
             epoch=epoch,
-            config=model_config,
+            config=json_model_config,
             best_val_loss=best_val_loss,
             parameter_count=parameter_count,
             receptive_field=receptive_field,
-            training_config=training_config,
+            training_config=json_training_config,
         )
         if training_config.get("save_every_epoch", True):
             save_checkpoint(
@@ -192,11 +205,11 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
                 model=model,
                 optimizer=optimizer,
                 epoch=epoch,
-                config=model_config,
+                config=json_model_config,
                 best_val_loss=best_val_loss,
                 parameter_count=parameter_count,
                 receptive_field=receptive_field,
-                training_config=training_config,
+                training_config=json_training_config,
             )
         if epoch_metrics["is_best"]:
             save_checkpoint(
@@ -204,11 +217,11 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
                 model=model,
                 optimizer=optimizer,
                 epoch=epoch,
-                config=model_config,
+                config=json_model_config,
                 best_val_loss=best_val_loss,
                 parameter_count=parameter_count,
                 receptive_field=receptive_field,
-                training_config=training_config,
+                training_config=json_training_config,
             )
 
     metrics["best_val_loss"] = best_val_loss

@@ -57,9 +57,39 @@ def set_seed(seed: int | None) -> None:
         torch.cuda.manual_seed_all(seed)
 
 
-def relative_to_repo(path: str | Path) -> str:
+def to_repo_relative(path: str | Path, repo_root: Path | None = None) -> str:
+    root = repository_root() if repo_root is None else repo_root
     resolved = resolve_path(path)
     try:
-        return resolved.resolve().relative_to(repository_root().resolve()).as_posix()
+        return resolved.resolve().relative_to(root.resolve()).as_posix()
     except ValueError:
         return resolved.as_posix()
+
+
+def relative_to_repo(path: str | Path) -> str:
+    return to_repo_relative(path)
+
+
+def sanitize_paths_for_json(value: Any, repo_root: Path | None = None) -> Any:
+    root = repository_root() if repo_root is None else repo_root
+    path_keys = {
+        "model_config_path",
+        "training_config_path",
+        "checkpoint_path",
+        "input_path",
+        "output_path",
+        "metadata_path",
+        "output_dir",
+    }
+    if isinstance(value, dict):
+        return {
+            key: to_repo_relative(item, root) if key in path_keys and isinstance(item, (str, Path)) else sanitize_paths_for_json(item, root)
+            for key, item in value.items()
+        }
+    if isinstance(value, list):
+        return [sanitize_paths_for_json(item, root) for item in value]
+    if isinstance(value, tuple):
+        return [sanitize_paths_for_json(item, root) for item in value]
+    if isinstance(value, Path):
+        return to_repo_relative(value, root)
+    return value

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 from typing import Any
 
@@ -41,6 +42,14 @@ def format_metric(value: float | str) -> str:
     return value if isinstance(value, str) else f"{value:.6g}"
 
 
+def format_optional(value: Any) -> str:
+    if value is None:
+        return "TBD"
+    if isinstance(value, float):
+        return f"{value:.6g}"
+    return str(value)
+
+
 def prediction_metrics(pred_path: Path | None, target_path: Path | None) -> tuple[dict[str, float | str], str]:
     empty = {"MSE": "TBD", "MAE": "TBD", "ESR": "TBD", "MRSTFT": "TBD", "SNR": "TBD"}
     if target_path is None or not target_path.is_file():
@@ -78,20 +87,43 @@ def checkpoint_metadata(checkpoint_path: Path | None) -> tuple[dict[str, Any], s
     }, "checkpoint metadata loaded"
 
 
-def custom_tcn_row(args: argparse.Namespace, target_path: Path | None) -> dict[str, str] | None:
-    pred_path = resolve_path(args.custom_tcn_pred)
-    checkpoint_path = resolve_path(args.custom_tcn_checkpoint)
-    if pred_path is None and checkpoint_path is None:
-        return None
+def benchmark_rtf(variant: str, pred_path: Path | None, checkpoint_path: Path | None) -> tuple[str, str]:
+    candidates: list[Path] = []
+    if checkpoint_path is not None:
+        candidates.append(checkpoint_path.parent.parent / "benchmark.json")
+    if pred_path is not None:
+        candidates.append(pred_path.parent / "benchmark.json")
+    candidates.append(repository_root() / "outputs" / "tcn_gated" / variant / "benchmark.json")
+    for candidate in candidates:
+        if candidate.is_file():
+            data = json.loads(candidate.read_text(encoding="utf-8"))
+            return format_optional(data.get("real_time_factor")), "benchmark metadata loaded"
+    return "TBD", "benchmark metadata not available"
 
+
+def tcn_variant_row(
+    *,
+    variant: str,
+    default_name: str,
+    pred_arg: str | Path | None,
+    checkpoint_arg: str | Path | None,
+    target_path: Path | None,
+) -> dict[str, str]:
+    pred_path = resolve_path(pred_arg)
+    checkpoint_path = resolve_path(checkpoint_arg)
     metrics, metric_note = prediction_metrics(pred_path, target_path)
     metadata, checkpoint_note = checkpoint_metadata(checkpoint_path)
     config = metadata.get("config", {})
-    channels = config.get("channels", "TBD")
-    skip_channels = config.get("skip_channels", "TBD")
+    if not config:
+        config_path = repository_root() / "configs" / "tcn_gated" / f"{variant}.json"
+        if config_path.is_file():
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+    channels = config.get("channels", "TBD") if isinstance(config, dict) else "TBD"
+    skip_channels = config.get("skip_channels", "TBD") if isinstance(config, dict) else "TBD"
     parameter_count = metadata.get("parameter_count", "TBD")
     receptive_field = metadata.get("receptive_field", "TBD")
-    model_name = args.custom_tcn_name or config.get("model_name", "GatedTCN-Medium")
+    model_name = config.get("model_name", default_name) if isinstance(config, dict) else default_name
+    rtf, benchmark_note = benchmark_rtf(variant, pred_path, checkpoint_path)
 
     return {
         "Model": model_name,
@@ -108,7 +140,8 @@ def custom_tcn_row(args: argparse.Namespace, target_path: Path | None) -> dict[s
         "ESR": format_metric(metrics["ESR"]),
         "MRSTFT": format_metric(metrics["MRSTFT"]),
         "SNR": format_metric(metrics["SNR"]),
-        "Inference Notes": f"{checkpoint_note}; {metric_note}",
+        "RTF": rtf,
+        "Inference Notes": f"{checkpoint_note}; {benchmark_note}; {metric_note}",
     }
 
 
@@ -142,6 +175,7 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "ESR": format_metric(a1_metrics["ESR"]),
             "MRSTFT": format_metric(a1_metrics["MRSTFT"]),
             "SNR": format_metric(a1_metrics["SNR"]),
+            "RTF": "TBD",
             "Inference Notes": "legacy NAM baseline artifact; " + a1_note,
         },
         {
@@ -159,6 +193,7 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "ESR": format_metric(a2_lite_metrics["ESR"]),
             "MRSTFT": format_metric(a2_lite_metrics["MRSTFT"]),
             "SNR": format_metric(a2_lite_metrics["SNR"]),
+            "RTF": "TBD",
             "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; " + a2_lite_note,
         },
         {
@@ -176,12 +211,37 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "ESR": format_metric(a2_full_metrics["ESR"]),
             "MRSTFT": format_metric(a2_full_metrics["MRSTFT"]),
             "SNR": format_metric(a2_full_metrics["SNR"]),
+            "RTF": "TBD",
             "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; " + a2_full_note,
         },
     ]
-    custom_row = custom_tcn_row(args, target_path)
-    if custom_row is not None:
-        rows.append(custom_row)
+    medium_pred = getattr(args, "tcn_medium_pred", None) or getattr(args, "custom_tcn_pred", None)
+    medium_checkpoint = getattr(args, "tcn_medium_checkpoint", None) or getattr(args, "custom_tcn_checkpoint", None)
+    rows.extend(
+        [
+            tcn_variant_row(
+                variant="small",
+                default_name="GatedTCN-Small",
+                pred_arg=getattr(args, "tcn_small_pred", None),
+                checkpoint_arg=getattr(args, "tcn_small_checkpoint", None),
+                target_path=target_path,
+            ),
+            tcn_variant_row(
+                variant="medium",
+                default_name=getattr(args, "custom_tcn_name", None) or "GatedTCN-Medium",
+                pred_arg=medium_pred,
+                checkpoint_arg=medium_checkpoint,
+                target_path=target_path,
+            ),
+            tcn_variant_row(
+                variant="large",
+                default_name="GatedTCN-Large",
+                pred_arg=getattr(args, "tcn_large_pred", None),
+                checkpoint_arg=getattr(args, "tcn_large_checkpoint", None),
+                target_path=target_path,
+            ),
+        ]
+    )
     return rows
 
 
@@ -201,6 +261,7 @@ def markdown_table(rows: list[dict[str, str]]) -> str:
         "ESR",
         "MRSTFT",
         "SNR",
+        "RTF",
         "Inference Notes",
     ]
     lines = [
@@ -235,6 +296,12 @@ def main() -> int:
     parser.add_argument("--custom-tcn-pred")
     parser.add_argument("--custom-tcn-name", default="GatedTCN-Medium")
     parser.add_argument("--custom-tcn-checkpoint")
+    parser.add_argument("--tcn-small-pred")
+    parser.add_argument("--tcn-small-checkpoint")
+    parser.add_argument("--tcn-medium-pred")
+    parser.add_argument("--tcn-medium-checkpoint")
+    parser.add_argument("--tcn-large-pred")
+    parser.add_argument("--tcn-large-checkpoint")
     parser.add_argument("--output", default="reports/experiment_comparison.md")
     args = parser.parse_args()
 
