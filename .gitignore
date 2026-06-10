@@ -34,6 +34,7 @@ outputs/a2_baseline/**/*.pth
 outputs/a1_baseline/prediction.wav
 outputs/a2_baseline/a2_lite_prediction.wav
 outputs/a2_baseline/a2_full_prediction.wav
+outputs/tcn_gated/**/prediction.wav
 
 # Jupyter
 .ipynb_checkpoints/

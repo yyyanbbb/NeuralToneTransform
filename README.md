@@ -163,6 +163,43 @@ Generate metrics comparison:
 
 If the local NAM Python API cannot run offline inference, the scripts fail and write metadata explaining the reason. Do not copy input audio as prediction audio. If prediction audio is missing, comparison metrics remain `TBD`.
 
+## Custom Gated TCN
+
+`Custom Gated TCN` is the self-developed model path for neural tone transformation. It uses causal dilated TCN blocks with gated tanh-sigmoid activations, residual connections, and skip aggregation to map dry audio to predicted wet audio. A1 and A2 remain reference baselines; the custom TCN is the project path for approaching their tone-modeling quality with our own architecture.
+
+Train the medium model:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\tcn\train.py --model-config configs/tcn_gated/medium.json --training-config configs/tcn_gated/training.json
+```
+
+Run inference:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\tcn\infer.py --checkpoint outputs/tcn_gated/medium/checkpoints/best.pt --input data/aligned/aligned_dry.wav --output outputs/tcn_gated/medium/prediction.wav
+```
+
+Verify TCN outputs:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\tcn\verify_tcn.py --output-dir outputs/tcn_gated/medium
+```
+
+Compare with A1/A2:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\compare_models.py `
+  --target data/aligned/aligned_wet.wav `
+  --a1-pred outputs/a1_baseline/prediction.wav `
+  --a2-lite-pred outputs/a2_baseline/a2_lite_prediction.wav `
+  --a2-full-pred outputs/a2_baseline/a2_full_prediction.wav `
+  --custom-tcn-pred outputs/tcn_gated/medium/prediction.wav `
+  --custom-tcn-name GatedTCN-Medium `
+  --custom-tcn-checkpoint outputs/tcn_gated/medium/checkpoints/best.pt
+```
+
+The training and inference scripts use `device=auto` by default. They use CUDA automatically when `torch.cuda.is_available()` is true, otherwise they fall back to CPU. CUDA is supported but not required.
+
 ## Evaluation
 
 `src/ntt/evaluation/metrics.py` provides MSE, MAE, ESR, Normalized MAE, SNR, and MRSTFT:
