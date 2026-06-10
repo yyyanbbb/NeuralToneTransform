@@ -1,0 +1,37 @@
+{
+  "created_at": "2026-06-10T22:15:20+08:00",
+  "inference_status": "completed",
+  "model_path": "outputs/a2_baseline/model.nam",
+  "input_path": "data/aligned/aligned_dry.wav",
+  "lite_output_path": "outputs/a2_baseline/a2_lite_prediction.wav",
+  "full_output_path": "outputs/a2_baseline/a2_full_prediction.wav",
+  "sample_rate": 48000,
+  "input_num_samples": 9119986,
+  "lite_output_num_samples": 9119986,
+  "full_output_num_samples": 9119986,
+  "model_architecture": "SlimmableContainer",
+  "detected_submodels": [
+    {
+      "channels": 3,
+      "max_value": 0.5
+    },
+    {
+      "channels": 8,
+      "max_value": 1.0
+    }
+  ],
+  "lite": {
+    "output_path": "outputs/a2_baseline/a2_lite_prediction.wav",
+    "output_num_samples": 9119986,
+    "output_peak": 0.8272806406021118,
+    "architecture": "WaveNet",
+    "channels": 3
+  },
+  "full": {
+    "output_path": "outputs/a2_baseline/a2_full_prediction.wav",
+    "output_num_samples": 9119986,
+    "output_peak": 0.6477130651473999,
+    "architecture": "WaveNet",
+    "channels": 8
+  }
+}

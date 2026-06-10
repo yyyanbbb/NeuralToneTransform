@@ -62,8 +62,12 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
     a2_model = repository_root() / "outputs" / "a2_baseline" / "model.nam"
     a2_report = repository_root() / "reports" / "a2_model_inspection.md"
 
-    a1_metrics, a1_note = prediction_metrics(resolve_path(args.a1_pred), target_path)
-    a2_metrics, a2_note = prediction_metrics(resolve_path(args.a2_full_pred or args.a2_lite_pred), target_path)
+    a1_prediction = resolve_path(args.a1_pred)
+    a2_lite_prediction = resolve_path(args.a2_lite_pred)
+    a2_full_prediction = resolve_path(args.a2_full_pred)
+    a1_metrics, a1_note = prediction_metrics(a1_prediction, target_path)
+    a2_lite_metrics, a2_lite_note = prediction_metrics(a2_lite_prediction, target_path)
+    a2_full_metrics, a2_full_note = prediction_metrics(a2_full_prediction, target_path)
     a2_status = "PASS" if a2_model.is_file() and a2_report.is_file() and "OVERALL: PASS" in a2_report.read_text(encoding="utf-8") else "MISSING"
 
     return [
@@ -73,8 +77,8 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "Channels": "single model",
             "Training Version": "neural-amp-modeler==0.12.2",
             "Output Path": "outputs/a1_baseline/model.nam",
+            "Prediction Path": relative(a1_prediction) if a1_prediction is not None else "TBD",
             "File Size": file_size(a1_model),
-            "Smoke Status": "PASS" if a1_model.is_file() else "MISSING",
             "MSE": format_metric(a1_metrics["MSE"]),
             "MAE": format_metric(a1_metrics["MAE"]),
             "ESR": format_metric(a1_metrics["ESR"]),
@@ -83,19 +87,34 @@ def model_rows(args: argparse.Namespace) -> list[dict[str, str]]:
             "Inference Notes": "legacy NAM baseline artifact; " + a1_note,
         },
         {
-            "Model": "A2 baseline",
+            "Model": "A2-Lite baseline",
             "Architecture": "PackedWaveNet exported as SlimmableContainer",
-            "Channels": "3 Lite / 8 Full",
+            "Channels": "3",
             "Training Version": "neural-amp-modeler==0.13.0",
             "Output Path": "outputs/a2_baseline/model.nam",
+            "Prediction Path": relative(a2_lite_prediction) if a2_lite_prediction is not None else "TBD",
             "File Size": file_size(a2_model),
-            "Smoke Status": a2_status,
-            "MSE": format_metric(a2_metrics["MSE"]),
-            "MAE": format_metric(a2_metrics["MAE"]),
-            "ESR": format_metric(a2_metrics["ESR"]),
-            "MRSTFT": format_metric(a2_metrics["MRSTFT"]),
-            "SNR": format_metric(a2_metrics["SNR"]),
-            "Inference Notes": "A2 smoke baseline; SlimmableContainer inspected; " + a2_note,
+            "MSE": format_metric(a2_lite_metrics["MSE"]),
+            "MAE": format_metric(a2_lite_metrics["MAE"]),
+            "ESR": format_metric(a2_lite_metrics["ESR"]),
+            "MRSTFT": format_metric(a2_lite_metrics["MRSTFT"]),
+            "SNR": format_metric(a2_lite_metrics["SNR"]),
+            "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; " + a2_lite_note,
+        },
+        {
+            "Model": "A2-Full baseline",
+            "Architecture": "PackedWaveNet exported as SlimmableContainer",
+            "Channels": "8",
+            "Training Version": "neural-amp-modeler==0.13.0",
+            "Output Path": "outputs/a2_baseline/model.nam",
+            "Prediction Path": relative(a2_full_prediction) if a2_full_prediction is not None else "TBD",
+            "File Size": file_size(a2_model),
+            "MSE": format_metric(a2_full_metrics["MSE"]),
+            "MAE": format_metric(a2_full_metrics["MAE"]),
+            "ESR": format_metric(a2_full_metrics["ESR"]),
+            "MRSTFT": format_metric(a2_full_metrics["MRSTFT"]),
+            "SNR": format_metric(a2_full_metrics["SNR"]),
+            "Inference Notes": f"A2 smoke status {a2_status}; SlimmableContainer inspected; " + a2_full_note,
         },
     ]
 
@@ -107,8 +126,8 @@ def markdown_table(rows: list[dict[str, str]]) -> str:
         "Channels",
         "Training Version",
         "Output Path",
+        "Prediction Path",
         "File Size",
-        "Smoke Status",
         "MSE",
         "MAE",
         "ESR",

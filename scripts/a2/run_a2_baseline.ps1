@@ -47,21 +47,33 @@ function Add-A2FailureLog {
   }
 
   $ReportText = Get-Content -LiteralPath $ReportPath -Raw
-  $Prefix = ""
-  if ($ReportText -notmatch '(?m)^## Failure Log\s*$') {
-    $Prefix = "`n`n## Failure Log`n"
-  }
-
   $Entry = @"
-$Prefix
 ### $(Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz")
 
 - Failed command: ``$Command``
 - Error summary: $ErrorSummary
 - Exit code: ``$ExitCode``
-- Notes: This failure does not invalidate the previously completed A2 smoke baseline unless the canonical model artifact is removed or inspection no longer passes.
+- Notes: This failure log does not invalidate the previously completed A2 smoke baseline unless the canonical model artifact is removed or model inspection no longer passes.
 "@
-  Add-Content -LiteralPath $ReportPath -Value $Entry -Encoding UTF8
+
+  $NewText = ""
+  $FailureMatch = [regex]::Match($ReportText, '(?m)^## Failure Log\s*$')
+  if (-not $FailureMatch.Success) {
+    $NewText = $ReportText.TrimEnd() + "`n`n## Failure Log`n`n" + $Entry.Trim() + "`n"
+  } else {
+    $SearchStart = $FailureMatch.Index + $FailureMatch.Length
+    $Rest = $ReportText.Substring($SearchStart)
+    $NextHeaderMatch = [regex]::Match($Rest, '(?m)^##\s+')
+    if ($NextHeaderMatch.Success) {
+      $InsertAt = $SearchStart + $NextHeaderMatch.Index
+      $Before = $ReportText.Substring(0, $InsertAt).TrimEnd()
+      $After = $ReportText.Substring($InsertAt).TrimStart()
+      $NewText = $Before + "`n`n" + $Entry.Trim() + "`n`n" + $After
+    } else {
+      $NewText = $ReportText.TrimEnd() + "`n`n" + $Entry.Trim() + "`n"
+    }
+  }
+  $NewText | Set-Content -LiteralPath $ReportPath -Encoding UTF8
 }
 
 function Invoke-LoggedCommand {

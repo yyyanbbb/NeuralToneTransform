@@ -31,6 +31,9 @@ outputs/a2_baseline/[0-9]*/
 outputs/a2_baseline/**/*.ckpt
 outputs/a2_baseline/**/*.pt
 outputs/a2_baseline/**/*.pth
+outputs/a1_baseline/prediction.wav
+outputs/a2_baseline/a2_lite_prediction.wav
+outputs/a2_baseline/a2_full_prediction.wav
 
 # Jupyter
 .ipynb_checkpoints/

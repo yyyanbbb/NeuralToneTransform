@@ -125,6 +125,44 @@ The completed A2 smoke baseline status is preserved in `reports/STEP3_A2_COMPLET
 - Strict behavior: add `--strict-clipping` to fail alignment on clipping risk.
 - Metadata fields include `dry_clipping_risk`, `wet_clipping_risk`, `strict_clipping`, and `warnings`.
 
+## Inference
+
+Run A1 inference with the A1 environment:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\inference\run_a1_inference.py --model outputs/a1_baseline/model.nam --input data/aligned/aligned_dry.wav --output outputs/a1_baseline/prediction.wav
+```
+
+Run A2 Lite and Full inference with the A2 environment:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\scripts\inference\run_a2_inference.py --model outputs/a2_baseline/model.nam --input data/aligned/aligned_dry.wav --lite-output outputs/a2_baseline/a2_lite_prediction.wav --full-output outputs/a2_baseline/a2_full_prediction.wav
+```
+
+All-in-one PowerShell entry:
+
+```powershell
+.\scripts\inference\run_all_inference.ps1 -ContinueOnError
+```
+
+Verify inference outputs:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\scripts\inference\verify_inference_outputs.py
+```
+
+Generate metrics comparison:
+
+```powershell
+.\.venv-a2\Scripts\python.exe .\src\ntt\evaluation\compare_models.py `
+  --target data/aligned/aligned_wet.wav `
+  --a1-pred outputs/a1_baseline/prediction.wav `
+  --a2-lite-pred outputs/a2_baseline/a2_lite_prediction.wav `
+  --a2-full-pred outputs/a2_baseline/a2_full_prediction.wav
+```
+
+If the local NAM Python API cannot run offline inference, the scripts fail and write metadata explaining the reason. Do not copy input audio as prediction audio. If prediction audio is missing, comparison metrics remain `TBD`.
+
 ## Evaluation
 
 `src/ntt/evaluation/metrics.py` provides MSE, MAE, ESR, Normalized MAE, SNR, and MRSTFT:
