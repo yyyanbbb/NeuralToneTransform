@@ -5,7 +5,7 @@
 | Model | Channels | Layers | Receptive Field | Parameters | Training Status |
 |---|---:|---:|---:|---:|---|
 | GatedTCN-Small | 16 | 12 | 2053 | 25665 | CPU smoke PASS; formal 20-epoch pending |
-| GatedTCN-Medium | 32 | 20 | 4093 | 167553 | CPU smoke PASS; formal 20-epoch pending due to CPU-only runtime |
+| GatedTCN-Medium | 32 | 20 | 4093 | 167553 | CPU smoke PASS; formal 20-epoch pending because CUDA is not available |
 | GatedTCN-Large | 48 | 22 | 8189 | 412225 | CPU smoke PASS; formal 20-epoch pending |
 
 ## Held-out Test Metrics
@@ -19,7 +19,7 @@
 ## Observations
 
 - Small: fastest TCN smoke inference and lowest parameter count.
-- Medium: original self-developed baseline variant; formal 20-epoch support is implemented but not run in this CPU-only runtime.
+- Medium: original self-developed baseline variant; formal 20-epoch support is implemented, but formal training is still pending because CUDA is not available in the current runtime.
 - Large: receptive field is 8189 samples, exceeding the approximate A2 reference of 6350 samples; current smoke checkpoint has the strongest TCN test MSE/SNR among the three but is slower on CPU.
 
 ## Remaining Work

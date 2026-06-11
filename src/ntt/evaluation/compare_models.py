@@ -130,6 +130,19 @@ def load_test_metrics(path: str | Path) -> tuple[dict[str, str], str]:
     }, "held-out test metrics loaded"
 
 
+def tcn_training_note(variant: str) -> str:
+    metrics_path = repository_root() / "outputs" / "tcn_gated" / variant / "training_metrics.json"
+    if not metrics_path.is_file():
+        return "training metrics not available"
+    data = json.loads(metrics_path.read_text(encoding="utf-8"))
+    completed_epochs = data.get("completed_epochs", len(data.get("epochs", [])))
+    num_epochs = data.get("num_epochs", data.get("training_config", {}).get("num_epochs"))
+    training_config_path = str(data.get("training_config_path", ""))
+    if completed_epochs == 20 and num_epochs == 20 and "formal" in training_config_path:
+        return "Formal 20-epoch checkpoint"
+    return "Smoke checkpoint, not formal training"
+
+
 def tcn_variant_row(
     *,
     variant: str,
@@ -154,6 +167,7 @@ def tcn_variant_row(
     model_name = config.get("model_name", default_name) if isinstance(config, dict) else default_name
     rtf, benchmark_note = benchmark_rtf(variant, pred_path, checkpoint_path)
     test_values, test_note = load_test_metrics(f"reports/test_metrics_tcn_{variant}.json")
+    training_note = tcn_training_note(variant)
 
     return {
         "Model": model_name,
@@ -172,7 +186,7 @@ def tcn_variant_row(
         "SNR": format_metric(metrics["SNR"]),
         **test_values,
         "RTF": rtf,
-        "Inference Notes": f"{checkpoint_note}; {benchmark_note}; {test_note}; {metric_note}",
+        "Inference Notes": f"{training_note}; {checkpoint_note}; {benchmark_note}; {test_note}; {metric_note}",
     }
 
 

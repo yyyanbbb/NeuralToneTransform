@@ -15,7 +15,7 @@ import torch
 
 from src.ntt.tcn.checkpoint import load_checkpoint
 from src.ntt.tcn.model import GatedTCN
-from src.ntt.tcn.utils import created_at, resolve_path, sanitize_paths_for_json, select_device, to_repo_relative, write_json
+from src.ntt.tcn.utils import created_at, cuda_device_name, resolve_path, sanitize_paths_for_json, select_device, to_repo_relative, write_json
 
 
 def load_audio(path: str | Path) -> tuple[np.ndarray, int]:
@@ -98,6 +98,7 @@ def benchmark(
 ) -> dict[str, Any]:
     device = select_device(device_name)
     print(f"using device: {device.type}")
+    device_label = cuda_device_name(device)
     checkpoint = load_checkpoint(checkpoint_path, map_location=device)
     model_config = checkpoint.get("config")
     if not isinstance(model_config, dict):
@@ -120,6 +121,7 @@ def benchmark(
         "checkpoint_path": checkpoint_path,
         "input_path": input_path,
         "device": device.type,
+        "cuda_device_name": device_label,
         "sample_rate": sample_rate,
         "input_num_samples": int(audio.shape[0]),
         "audio_duration_seconds": audio_duration,

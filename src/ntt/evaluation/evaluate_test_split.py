@@ -17,7 +17,7 @@ from src.ntt.data.dataset import PairedAudioChunkDataset
 from src.ntt.evaluation.metrics import compute_metrics
 from src.ntt.tcn.checkpoint import load_checkpoint
 from src.ntt.tcn.model import GatedTCN
-from src.ntt.tcn.utils import created_at, resolve_path, sanitize_paths_for_json, select_device, write_json
+from src.ntt.tcn.utils import created_at, cuda_device_name, resolve_path, sanitize_paths_for_json, select_device, write_json
 
 
 METRIC_KEYS = {
@@ -97,6 +97,7 @@ def evaluate_prediction_file(
         "prediction_path": prediction_path,
         "sample_rate": target_rate,
         "device": "cpu",
+        "cuda_device_name": None,
         "created_at": created_at(),
         **summary,
     }
@@ -111,6 +112,7 @@ def evaluate_tcn_checkpoint(
     device_name: str,
 ) -> dict[str, Any]:
     device = select_device(device_name)
+    device_label = cuda_device_name(device)
     checkpoint = load_checkpoint(checkpoint_path, map_location=device)
     model_config = checkpoint.get("config")
     if not isinstance(model_config, dict):
@@ -143,6 +145,7 @@ def evaluate_tcn_checkpoint(
         "checkpoint_path": checkpoint_path,
         "sample_rate": sample_rate,
         "device": device.type,
+        "cuda_device_name": device_label,
         "parameter_count": int(checkpoint.get("parameter_count", model.count_parameters())),
         "receptive_field": int(checkpoint.get("receptive_field", model.receptive_field())),
         "created_at": created_at(),

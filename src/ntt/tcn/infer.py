@@ -14,7 +14,7 @@ import torch
 
 from src.ntt.tcn.checkpoint import load_checkpoint
 from src.ntt.tcn.model import GatedTCN
-from src.ntt.tcn.utils import created_at, relative_to_repo, resolve_path, select_device, write_json
+from src.ntt.tcn.utils import created_at, cuda_device_name, relative_to_repo, resolve_path, select_device, write_json
 
 
 def load_audio(path: str | Path) -> tuple[np.ndarray, int]:
@@ -62,6 +62,7 @@ def infer(
 ) -> dict[str, Any]:
     device = select_device(device_name)
     print(f"using device: {device.type}")
+    device_label = cuda_device_name(device)
     checkpoint = load_checkpoint(checkpoint_path, map_location=device)
     model_config = checkpoint.get("config")
     if not isinstance(model_config, dict):
@@ -89,6 +90,7 @@ def infer(
         "input_num_samples": int(audio.shape[0]),
         "output_num_samples": int(prediction.shape[0]),
         "device": device.type,
+        "cuda_device_name": device_label,
         "model_name": model_config.get("model_name", "GatedTCN"),
         "parameter_count": int(checkpoint.get("parameter_count", model.count_parameters())),
         "receptive_field": int(checkpoint.get("receptive_field", model.receptive_field())),

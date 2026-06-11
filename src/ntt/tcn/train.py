@@ -18,6 +18,7 @@ from src.ntt.tcn.losses import CompositeToneLoss
 from src.ntt.tcn.model import GatedTCN
 from src.ntt.tcn.utils import (
     created_at,
+    cuda_device_name,
     load_json,
     resolve_path,
     sanitize_paths_for_json,
@@ -84,11 +85,15 @@ def run_epoch(
 
 def train(model_config_path: str | Path, training_config_path: str | Path) -> dict[str, Any]:
     training_start = time.perf_counter()
+    training_start_time = created_at()
     model_config = load_json(model_config_path)
     training_config = load_json(training_config_path)
     set_seed(training_config.get("seed"))
     device = select_device(training_config.get("device", "auto"))
     print(f"using device: {device.type}")
+    device_name = cuda_device_name(device)
+    if device_name is not None:
+        print(f"cuda device: {device_name}")
 
     train_dataset = PairedAudioChunkDataset(training_config["metadata_path"], split="train")
     val_dataset = PairedAudioChunkDataset(training_config["metadata_path"], split="val")
@@ -134,9 +139,14 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
         "model_config": json_model_config,
         "training_config": json_training_config,
         "device": device.type,
+        "cuda_device_name": device_name,
+        "num_epochs": int(training_config.get("num_epochs", 1)),
+        "completed_epochs": 0,
+        "best_epoch": None,
         "parameter_count": parameter_count,
         "receptive_field": receptive_field,
         "created_at": created_at(),
+        "training_start_time": training_start_time,
         "epochs": [],
     }
 
@@ -144,6 +154,7 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
     gradient_clip_norm = training_config.get("gradient_clip_norm")
     max_train_batches = training_config.get("max_train_batches")
     max_val_batches = training_config.get("max_val_batches")
+    best_epoch: int | None = None
 
     for epoch in range(1, num_epochs + 1):
         train_metrics = run_epoch(
@@ -164,14 +175,19 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
             gradient_clip_norm=None,
             max_batches=max_val_batches,
         )
-        best_val_loss = min(best_val_loss, val_metrics["total"])
+        is_best = val_metrics["total"] <= best_val_loss
+        if is_best:
+            best_val_loss = val_metrics["total"]
+            best_epoch = epoch
         epoch_metrics = {
             "epoch": epoch,
             "train": train_metrics,
             "val": val_metrics,
-            "is_best": val_metrics["total"] <= best_val_loss,
+            "is_best": is_best,
         }
         metrics["epochs"].append(epoch_metrics)
+        metrics["completed_epochs"] = epoch
+        metrics["best_epoch"] = best_epoch
 
         print(
             "epoch {epoch}/{num_epochs} "
@@ -227,7 +243,11 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
             )
 
     metrics["best_val_loss"] = best_val_loss
-    metrics["training_time_seconds"] = time.perf_counter() - training_start
+    metrics["train_loss_history"] = [epoch["train"]["total"] for epoch in metrics["epochs"]]
+    metrics["val_loss_history"] = [epoch["val"]["total"] for epoch in metrics["epochs"]]
+    metrics["training_end_time"] = created_at()
+    metrics["total_training_time_seconds"] = time.perf_counter() - training_start
+    metrics["training_time_seconds"] = metrics["total_training_time_seconds"]
     write_json(output_dir / "training_metrics.json", metrics)
     return metrics
 

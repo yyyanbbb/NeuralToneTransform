@@ -228,6 +228,8 @@ Run Medium formal 20-epoch training only:
 
 The formal configs keep `num_epochs=20`. With `device=auto`, CUDA is used automatically when available; CPU-only runtimes can be very slow and should keep formal status as pending until the run actually completes.
 
+Current checked runtime is CPU-only, so GatedTCN-Medium formal 20-epoch training is still pending. The formal checkpoint should only be reported as complete after the 20-epoch command actually finishes.
+
 Formal configs:
 
 - `configs/tcn_gated/training_formal_small.json`

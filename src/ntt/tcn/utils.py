@@ -47,6 +47,19 @@ def select_device(requested: str = "auto") -> torch.device:
     return torch.device(requested)
 
 
+def cuda_device_name(device: torch.device | str | None = None) -> str | None:
+    if not torch.cuda.is_available():
+        return None
+    if device is None:
+        index = torch.cuda.current_device()
+    else:
+        torch_device = torch.device(device)
+        if torch_device.type != "cuda":
+            return None
+        index = torch_device.index if torch_device.index is not None else torch.cuda.current_device()
+    return torch.cuda.get_device_name(index)
+
+
 def set_seed(seed: int | None) -> None:
     if seed is None:
         return

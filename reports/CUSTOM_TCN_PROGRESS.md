@@ -6,7 +6,7 @@ The Custom Gated TCN code path is implemented under `src/ntt/tcn/`. Small, Mediu
 
 Formal training support is implemented through `configs/tcn_gated/training_formal_*.json` and `scripts/tcn/run_tcn_ablation.ps1`.
 
-Medium 20-epoch formal training pending due to CPU-only runtime.
+Medium 20-epoch formal training still pending because CUDA is not available in the current runtime.
 
 ## Formal Training
 
@@ -29,7 +29,8 @@ Current runtime check:
 
 - `torch`: 2.11.0+cpu
 - CUDA available: false
-- status: Formal 20-epoch training pending due to CPU-only runtime.
+- CUDA device name: N/A
+- status: Medium 20-epoch formal training still pending because CUDA is not available in the current runtime.
 
 ## Model Configurations
 
