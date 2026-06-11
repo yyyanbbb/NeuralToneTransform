@@ -2,35 +2,27 @@
 
 ## Current Status
 
-The Custom Gated TCN code path is implemented under `src/ntt/tcn/`. Small, Medium, and Large variants completed CPU smoke ablation runs with training, checkpointing, full-file inference, verification, benchmark output, figure generation, full-file comparison, and held-out test split evaluation.
+GatedTCN-Medium has completed 20-epoch formal training on GPU. The prediction audio, held-out test metrics, inference benchmark, and comparison table have been regenerated from the formal checkpoint.
 
-Formal training support is implemented through `configs/tcn_gated/training_formal_*.json` and `scripts/tcn/run_tcn_ablation.ps1`.
+Small and Large remain CPU smoke checkpoints. They should continue to be labeled as smoke results until their own 20-epoch formal runs complete.
 
-Medium 20-epoch formal training still pending because CUDA is not available in the current runtime.
+## Formal Medium Training
 
-## Formal Training
-
-Medium formal config:
-
-- config: `configs/tcn_gated/training_formal_medium.json`
-- epochs: 20
-- batch size: 4
-- device: `auto`
-- max train batches: null
-- max val batches: null
-
-Formal command:
-
-```powershell
-.\scripts\tcn\run_tcn_ablation.ps1 -SkipSmall -SkipLarge -ContinueOnError
-```
-
-Current runtime check:
-
-- `torch`: 2.11.0+cpu
-- CUDA available: false
-- CUDA device name: N/A
-- status: Medium 20-epoch formal training still pending because CUDA is not available in the current runtime.
+| Field | Value |
+|---|---|
+| Status | Completed |
+| Device | cuda |
+| CUDA Device | NVIDIA GeForce RTX 5070 Ti Laptop GPU |
+| Epochs | 20 |
+| Completed Epochs | 20 |
+| Best Epoch | 19 |
+| Best Val Loss | 0.00628652 |
+| Parameter Count | 167553 |
+| Receptive Field | 4093 |
+| Training Time Seconds | 125.642443 |
+| Model Config | `configs/tcn_gated/medium.json` |
+| Training Config | `configs/tcn_gated/training_formal_medium.json` |
+| Checkpoint | `outputs/tcn_gated/medium/checkpoints/best.pt` |
 
 ## Model Configurations
 
@@ -42,13 +34,13 @@ Current runtime check:
 
 Large exceeds the A2 reference receptive field of roughly 6350 samples while remaining small enough for CPU smoke verification.
 
-## Smoke Training Status
+## Training Status
 
-| Model | Device | Epochs | Train Batches | Val Batches | Train Loss | Val Loss | Status |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| GatedTCN-Small | cpu | 1 | 1 | 1 | 0.198326 | 0.163366 | PASS |
-| GatedTCN-Medium | cpu | 1 | 1 | 1 | 0.123419 | 0.858192 | PASS |
-| GatedTCN-Large | cpu | 1 | 1 | 1 | 0.139288 | 0.103801 | PASS |
+| Model | Device | Epochs | Training Config | Status |
+| --- | --- | ---: | --- | --- |
+| GatedTCN-Small | cpu | 1 | `configs/tcn_gated/training_smoke_small.json` | Smoke checkpoint, not formal training |
+| GatedTCN-Medium | cuda | 20 | `configs/tcn_gated/training_formal_medium.json` | Formal 20-epoch GPU checkpoint |
+| GatedTCN-Large | cpu | 1 | `configs/tcn_gated/training_smoke_large.json` | Smoke checkpoint, not formal training |
 
 ## Held-out Test Evaluation
 
@@ -60,10 +52,10 @@ Held-out test split evaluation support is implemented in `src/ntt/evaluation/eva
 | A2-Lite baseline | 0.0161523 | 0.0939756 | 1.08471 | 4.6246 | -0.275191 |
 | A2-Full baseline | 0.0207692 | 0.0924068 | 1.42595 | 2.27191 | -0.982792 |
 | GatedTCN-Small | 0.0154348 | 0.0996688 | 1.08549 | 4.53482 | -0.311414 |
-| GatedTCN-Medium | 0.0294477 | 0.144289 | 2.63712 | 5.13135 | -3.5008 |
+| GatedTCN-Medium | 0.000828382 | 0.0201283 | 0.0608064 | 1.9389 | 12.3276 |
 | GatedTCN-Large | 0.0133959 | 0.0873261 | 0.903768 | 4.07872 | 0.448861 |
 
-These TCN values are from CPU smoke checkpoints, not formal 20-epoch checkpoints.
+GatedTCN-Medium test metrics are based on the 20-epoch formal GPU checkpoint. Small and Large are still CPU smoke checkpoint metrics.
 
 ## Benchmark Status
 
@@ -75,7 +67,7 @@ TCN benchmark support is implemented in `src/ntt/tcn/benchmark.py`. A1/A2 NAM be
 | A2-Lite baseline | `.venv-a2` | 0.0517085 | 928280.72 | 70.18 |
 | A2-Full baseline | `.venv-a2` | 0.0708378 | 677604.35 | 96.14 |
 | GatedTCN-Small | cpu | 0.0738286 | 650154.30 | 400.72 |
-| GatedTCN-Medium | cpu | 0.178694 | 268615.21 | 970.00 |
+| GatedTCN-Medium | cuda | 0.0132906 | 3611571.84 | 71.71 |
 | GatedTCN-Large | cpu | 0.336964 | 142448.60 | 1829.17 |
 
 ## Figure Generation Status
@@ -97,12 +89,12 @@ Figure notes are in `reports/FIGURE_ANALYSIS.md`.
 
 ## Comparison with A1/A2
 
-`src/ntt/evaluation/compare_models.py` now writes rows for A1 baseline, A2-Lite baseline, A2-Full baseline, GatedTCN-Small, GatedTCN-Medium, and GatedTCN-Large. The table includes full-file metrics, held-out test metrics, and RTF.
+`src/ntt/evaluation/compare_models.py` writes rows for A1 baseline, A2-Lite baseline, A2-Full baseline, GatedTCN-Small, GatedTCN-Medium, and GatedTCN-Large. The table includes full-file metrics, held-out test metrics, and RTF.
+
+`reports/experiment_comparison.md` has been regenerated from the formal Medium prediction, `reports/test_metrics_tcn_medium.json`, and `outputs/tcn_gated/medium/benchmark.json`.
 
 ## Remaining Work
 
-- run Medium formal 20-epoch training on a CUDA-capable runtime
 - optionally run Small and Large formal 20-epoch ablations
 - repeat with multiple seeds
-- compare against A1/A2 using formal TCN checkpoints
 - add subjective listening notes after formal training

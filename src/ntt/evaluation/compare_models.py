@@ -139,6 +139,9 @@ def tcn_training_note(variant: str) -> str:
     num_epochs = data.get("num_epochs", data.get("training_config", {}).get("num_epochs"))
     training_config_path = str(data.get("training_config_path", ""))
     if completed_epochs == 20 and num_epochs == 20 and "formal" in training_config_path:
+        device = data.get("device")
+        if device == "cuda":
+            return "Formal 20-epoch GPU checkpoint"
         return "Formal 20-epoch checkpoint"
     return "Smoke checkpoint, not formal training"
 

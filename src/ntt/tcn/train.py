@@ -132,6 +132,7 @@ def train(model_config_path: str | Path, training_config_path: str | Path) -> di
     json_model_config = sanitize_paths_for_json(model_config)
     json_training_config = sanitize_paths_for_json(training_config)
     metrics: dict[str, Any] = {
+        "model_name": model_config.get("model_name", "GatedTCN"),
         "model_config_path": to_repo_relative(model_config_path),
         "training_config_path": to_repo_relative(training_config_path),
         "metadata_path": to_repo_relative(training_config["metadata_path"]),

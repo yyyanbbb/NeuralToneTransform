@@ -158,6 +158,8 @@ Run Formal Medium training with the global GPU Python:
 .\scripts\tcn\run_medium_formal_gpu.ps1
 ```
 
+GatedTCN-Medium has completed 20-epoch formal GPU training. The formal checkpoint is available at `outputs/tcn_gated/medium/checkpoints/best.pt`.
+
 ## Alignment Clipping Policy
 
 - Default behavior: peak amplitude `>= 1.0` prints a warning and records clipping risk in metadata.
@@ -267,7 +269,13 @@ Run Medium formal 20-epoch training only:
 
 The formal configs keep `num_epochs=20`. With `device=auto`, CUDA is used automatically when available; CPU-only runtimes can be very slow and should keep formal status as pending until the run actually completes.
 
-Current checked runtime is CPU-only, so GatedTCN-Medium formal 20-epoch training is still pending. The formal checkpoint should only be reported as complete after the 20-epoch command actually finishes.
+GatedTCN-Medium has completed 20-epoch formal GPU training. The formal checkpoint is available at `outputs/tcn_gated/medium/checkpoints/best.pt`.
+
+Reproduce the Medium formal GPU run:
+
+```powershell
+.\scripts\tcn\run_medium_formal_gpu.ps1
+```
 
 Formal configs:
 

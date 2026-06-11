@@ -86,6 +86,7 @@ def infer(
         "checkpoint_path": relative_to_repo(checkpoint_path),
         "input_path": relative_to_repo(input_path),
         "output_path": relative_to_repo(output_path),
+        "prediction_path": relative_to_repo(output_path),
         "sample_rate": sample_rate,
         "input_num_samples": int(audio.shape[0]),
         "output_num_samples": int(prediction.shape[0]),
