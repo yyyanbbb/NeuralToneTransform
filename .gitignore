@@ -3,6 +3,8 @@
 .venv-a2/
 venv/
 env/
+!scripts/env/
+!scripts/env/use_global_gpu_python.ps1
 
 # Python cache
 __pycache__/

@@ -119,6 +119,45 @@ By default, alignment treats peak amplitude `>= 1.0` as a warning instead of sto
 
 The completed A2 smoke baseline status is preserved in `reports/STEP3_A2_COMPLETION_REPORT.md`. Future A2 run failures append entries under `## Failure Log` instead of overwriting the successful status. This keeps the historical success state separate from later troubleshooting records.
 
+## GPU Environment
+
+The project supports automatic CPU/GPU switching. CPU environments such as the existing `.venv` or `.venv-a2` are useful for smoke tests, reproducibility checks, and quick validation. Formal training should use a CUDA-enabled PyTorch environment.
+
+Recommended global Conda environment:
+
+```text
+ntt-gpu-cu128
+```
+
+Install the environment from the repository root in Windows PowerShell:
+
+```powershell
+conda create -n ntt-gpu-cu128 python=3.11 -y
+conda activate ntt-gpu-cu128
+python -m pip install --upgrade pip setuptools wheel
+
+Get-Content requirements.txt |
+  Where-Object { $_ -notmatch "^(torch|torchaudio)==" } |
+  Set-Content requirements-no-torch.txt
+
+python -m pip install --index-url https://download.pytorch.org/whl/cu128 torch==2.11.0+cu128 torchaudio==2.11.0+cu128
+python -m pip install -r requirements-no-torch.txt
+```
+
+Install CUDA PyTorch before `requirements-no-torch.txt` so transitive `torch` dependencies are satisfied by the CUDA wheel instead of a CPU PyPI wheel.
+
+Verify CUDA PyTorch:
+
+```powershell
+python -c "import torch; print(torch.__version__); print(torch.version.cuda); print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'N/A')"
+```
+
+Run Formal Medium training with the global GPU Python:
+
+```powershell
+.\scripts\tcn\run_medium_formal_gpu.ps1
+```
+
 ## Alignment Clipping Policy
 
 - Default behavior: peak amplitude `>= 1.0` prints a warning and records clipping risk in metadata.
