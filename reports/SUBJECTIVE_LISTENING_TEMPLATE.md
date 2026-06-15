@@ -6,6 +6,10 @@ This document provides a manual listening evaluation template for comparing targ
 
 This subjective evaluation is a supplement to objective metrics such as MSE, ESR, MRSTFT, SNR, and RTF. It should not replace held-out test evaluation.
 
+## Current Status
+
+Subjective listening evaluation has not yet been manually completed. The table below is prepared for human evaluation and should be filled after listening to the target wet audio and each model prediction under the same playback conditions.
+
 ## Audio Files
 
 | Model | File |
@@ -42,10 +46,10 @@ Use a 1-5 scale:
 
 | Model | Tone Similarity | Dynamic Response | Noise / Artifact | Frequency Balance | Overall Preference | Notes |
 |---|---:|---:|---:|---:|---:|---|
-| A1 Baseline | TBD | TBD | TBD | TBD | TBD | TBD |
-| A2-Lite Baseline | TBD | TBD | TBD | TBD | TBD | TBD |
-| A2-Full Baseline | TBD | TBD | TBD | TBD | TBD | TBD |
-| GatedTCN-Medium | TBD | TBD | TBD | TBD | TBD | TBD |
+| A1 Baseline | TBD | TBD | TBD | TBD | TBD | Pending manual listening |
+| A2-Lite Baseline | TBD | TBD | TBD | TBD | TBD | Pending manual listening |
+| A2-Full Baseline | TBD | TBD | TBD | TBD | TBD | Pending manual listening |
+| GatedTCN-Medium | TBD | TBD | TBD | TBD | TBD | Pending manual listening |
 
 ## Listening Notes
 
@@ -56,6 +60,15 @@ Use a 1-5 scale:
 - GatedTCN-Medium notes:
 - Final subjective conclusion:
 
+## Manual Evaluation Procedure
+
+1. Use the same playback device and volume for all audio files.
+2. Listen to the target wet audio first.
+3. Listen to each prediction without changing volume.
+4. Rate each model using the 1-5 scale.
+5. If possible, conduct blind listening by hiding model names during rating.
+6. Use objective metrics only as supporting evidence, not as a substitute for listening.
+
 ## Notes
 
-This listening test should be performed using the same playback device and volume level where possible. The listener should avoid looking at the model name during rating if blind evaluation is possible.
+This subjective evaluation is a supplement to objective metrics such as MSE, ESR, MRSTFT, SNR, and RTF. It should not replace held-out test evaluation.
