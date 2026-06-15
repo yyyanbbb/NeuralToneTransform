@@ -10,7 +10,8 @@ GatedTCN-Medium is selected as the final custom TCN model.
 - It achieved strong held-out test performance using the formal checkpoint.
 - It outperformed A1/A2 baselines on key test metrics in the current experiment, especially Test ESR and Test SNR.
 - It has a lower RTF than A1/A2 baselines in the current benchmark.
-- Small and Large remain smoke checkpoints and are not selected as final models.
+- Small and Large now also have formal 20-epoch GPU ablation results, but they are not selected as final models in this package.
+- Large formal result may be considered in future model selection, but this package keeps GatedTCN-Medium as the final selected model for consistency.
 
 ## Architecture
 
@@ -65,7 +66,9 @@ GatedTCN-Medium is selected as the final custom TCN model.
 | A1 baseline | 1.7338 | -1.91394 | 0.0670541 | Baseline prediction-file mode |
 | A2-Lite baseline | 1.08471 | -0.275191 | 0.0517085 | Baseline prediction-file mode |
 | A2-Full baseline | 1.42595 | -0.982792 | 0.0708378 | Baseline prediction-file mode |
+| GatedTCN-Small | 0.141307 | 8.538 | 0.00647809 | Formal 20-epoch GPU checkpoint; fastest TCN variant |
 | GatedTCN-Medium | 0.0608064 | 12.3276 | 0.0132906 | Final selected model; formal 20-epoch GPU checkpoint |
+| GatedTCN-Large | 0.0489031 | 13.1984 | 0.0500886 | Formal 20-epoch GPU checkpoint; strongest TCN test metrics but higher RTF |
 
 - Lower ESR means lower waveform energy error.
 - Higher SNR means the prediction is closer to the target wet signal.
@@ -74,8 +77,8 @@ GatedTCN-Medium is selected as the final custom TCN model.
 
 ## Limitations
 
-- Only GatedTCN-Medium has completed formal 20-epoch GPU training.
-- Small and Large are currently smoke checkpoints.
+- GatedTCN-Medium remains the final selected custom model for this package.
+- Small and Large formal ablation results were added after Medium selection and do not automatically change the final model.
 - Final subjective listening evaluation still needs manual human judgment.
 - The model is trained on the current aligned dataset and may not generalize to unseen amplifiers, pedals, recording chains, or guitar tones without retraining.
 - Current results are based on the current dataset and held-out test split only.

@@ -6,13 +6,14 @@
   "metadata_path": "data/chunks/metadata.json",
   "checkpoint_path": "outputs/tcn_gated/large/checkpoints/best.pt",
   "sample_rate": 48000,
-  "device": "cpu",
+  "device": "cuda",
+  "cuda_device_name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
   "parameter_count": 412225,
   "receptive_field": 8189,
-  "created_at": "2026-06-10T17:00:52.779863+00:00",
-  "mse": 0.013395854720865942,
-  "mae": 0.08732608972812224,
-  "esr": 0.9037676675969762,
-  "mrstft": 4.078716516494751,
-  "snr": 0.4488605045695009
+  "created_at": "2026-06-15T14:38:17.692050+00:00",
+  "mse": 0.0007029255313253948,
+  "mae": 0.01785616697892465,
+  "esr": 0.04890311499445301,
+  "mrstft": 1.8698421875635782,
+  "snr": 13.198440121824934
 }

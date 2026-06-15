@@ -27,6 +27,6 @@ Spectrograms show how energy is distributed over time and frequency. Differences
 
 ## Scope
 
-GatedTCN-Medium figures are generated from the 20-epoch formal GPU checkpoint. Small and Large figures, if present, are generated from smoke checkpoints unless formal training is run separately.
+GatedTCN-Medium figures are generated from the formal 20-epoch GPU checkpoint. GatedTCN-Small and GatedTCN-Large figures are also generated from their formal 20-epoch GPU checkpoints after the ablation extension.
 
-These figures visualize the current smoke/formal experiment artifacts. They are not a final subjective listening conclusion.
+These figures visualize the current formal experiment artifacts. They are not a final subjective listening conclusion.

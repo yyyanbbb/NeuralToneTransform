@@ -273,15 +273,17 @@ GatedTCN-Medium has completed 20-epoch formal GPU training. The formal checkpoin
 
 ## Final Custom TCN Model
 
-The final selected custom model is `GatedTCN-Medium`.
+The final selected custom model is GatedTCN-Medium.
 
 - Checkpoint: `outputs/tcn_gated/medium/checkpoints/best.pt`
 - Prediction: `outputs/tcn_gated/medium/prediction.wav`
 - Model card: `reports/FINAL_TCN_MODEL_CARD.md`
 - Final experiment summary: `reports/FINAL_EXPERIMENT_SUMMARY.md`
 - Subjective listening template: `reports/SUBJECTIVE_LISTENING_TEMPLATE.md`
+- Multi-seed experiment plan: `reports/MULTI_SEED_EXPERIMENT_PLAN.md`
+- External dataset evaluation plan: `reports/EXTERNAL_DATASET_EVALUATION_PLAN.md`
 
-Small and Large are currently smoke checkpoints unless formal training is run separately. They are not used as the final selected model.
+Small and Large have completed formal 20-epoch GPU ablation runs. They are not used as the final selected model. Large formal result may be considered in future model selection, but this package keeps GatedTCN-Medium as the final selected model for consistency.
 
 Reproduce the Medium formal GPU run:
 
