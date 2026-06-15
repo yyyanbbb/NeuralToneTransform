@@ -271,6 +271,17 @@ The formal configs keep `num_epochs=20`. With `device=auto`, CUDA is used automa
 
 GatedTCN-Medium has completed 20-epoch formal GPU training. The formal checkpoint is available at `outputs/tcn_gated/medium/checkpoints/best.pt`.
 
+## Final Custom TCN Model
+
+The final selected custom model is `GatedTCN-Medium`.
+
+- Checkpoint: `outputs/tcn_gated/medium/checkpoints/best.pt`
+- Prediction: `outputs/tcn_gated/medium/prediction.wav`
+- Model card: `reports/FINAL_TCN_MODEL_CARD.md`
+- Final experiment summary: `reports/FINAL_EXPERIMENT_SUMMARY.md`
+
+Small and Large are currently smoke checkpoints unless formal training is run separately. They are not used as the final selected model.
+
 Reproduce the Medium formal GPU run:
 
 ```powershell

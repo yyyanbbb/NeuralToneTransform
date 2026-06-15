@@ -27,4 +27,6 @@ Spectrograms show how energy is distributed over time and frequency. Differences
 
 ## Scope
 
+GatedTCN-Medium figures are generated from the 20-epoch formal GPU checkpoint.
+
 These figures visualize the current smoke/formal experiment artifacts. They are not a final subjective listening conclusion.

@@ -2,9 +2,9 @@
 
 ## Purpose
 
-Final metrics should be reported on the held-out test split, not only on the full aligned audio. The train split is used for training, the val split is used for checkpoint selection, and the test split is used for final metrics.
+Final metrics should be reported on the held-out test split, not only on the full aligned audio. The train split is used for training and is not used for final testing. The val split is used for checkpoint selection, and the held-out test split is used for final metrics.
 
-GatedTCN-Medium uses the 20-epoch formal GPU checkpoint. GatedTCN-Medium test metrics are based on the 20-epoch formal GPU checkpoint.
+A1/A2 use prediction-file mode. GatedTCN-Medium uses formal checkpoint mode. GatedTCN-Medium test metrics are based on the 20-epoch formal GPU checkpoint.
 
 ## Commands
 
@@ -68,5 +68,11 @@ C:\Users\yanbo\.conda\envs\ntt-gpu-cu128\python.exe .\src\ntt\evaluation\evaluat
 - train split is used for training;
 - val split is used for checkpoint selection;
 - test split is used for final metrics;
+- A1/A2 metrics use prediction-file mode;
+- GatedTCN-Medium metrics use formal checkpoint mode;
 - Medium test metrics were recomputed from `outputs/tcn_gated/medium/checkpoints/best.pt` using CUDA;
 - Small and Large remain smoke checkpoint results.
+
+## Final Model Test Result
+
+GatedTCN-Medium is the final selected custom TCN model. Its held-out test metrics are computed using the 20-epoch formal GPU checkpoint, not the earlier CPU smoke checkpoint.
