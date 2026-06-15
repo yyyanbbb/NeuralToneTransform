@@ -4,13 +4,19 @@
 
 This project builds a custom neural audio black-box modeling system for dry-to-wet guitar tone transformation.
 
+The goal is not only to run existing NAM baselines, but also to implement and evaluate a custom TCN-based neural audio model.
+
 ## 2. Baselines
+
+The project uses the following baselines:
 
 - A1 baseline
 - A2-Lite baseline
 - A2-Full baseline
 
-## 3. Custom Model
+## 3. Custom Models
+
+The project implements the following custom Gated TCN variants:
 
 - GatedTCN-Small
 - GatedTCN-Medium
@@ -19,6 +25,15 @@ This project builds a custom neural audio black-box modeling system for dry-to-w
 ## 4. Final Selected Model
 
 GatedTCN-Medium is selected as the final custom model.
+
+Reasons:
+
+- It completed 20-epoch formal GPU training.
+- It has a validated formal checkpoint.
+- It was evaluated on the held-out test split.
+- It achieved strong Test ESR and Test SNR.
+- It has a practical inference speed with RTF below 1.
+- Small and Large remain smoke checkpoints and are not selected as final models.
 
 ## 5. Held-out Test Comparison
 
@@ -31,17 +46,20 @@ GatedTCN-Medium is selected as the final custom model.
 | GatedTCN-Medium | 0.000828382 | 0.0201283 | 0.0608064 | 1.9389 | 12.3276 | 0.0132906 | Formal 20-epoch GPU checkpoint; final selected custom model |
 | GatedTCN-Large | 0.0133959 | 0.0873261 | 0.903768 | 4.07872 | 0.448861 | 0.336964 | Smoke checkpoint, not formal training |
 
-## 6. Interpretation
+## 6. Technical Interpretation
 
-Lower ESR means the waveform energy error is lower. Higher SNR means the prediction is closer to the target. RTF lower than 1 means faster-than-real-time offline inference. On the current aligned dataset and held-out test split, the Medium formal checkpoint significantly improves over its previous smoke checkpoint and outperforms A1/A2 on key test metrics in this experiment.
+Lower ESR means the predicted waveform has lower energy-normalized error against the target wet signal. Higher SNR means the prediction is closer to the target signal. Lower MRSTFT means the model better matches the target in the time-frequency domain. RTF lower than 1 means faster-than-real-time offline inference.
+
+GatedTCN-Medium significantly improves over its earlier CPU smoke checkpoint. In the current experiment, GatedTCN-Medium outperforms A1/A2 baselines on key held-out test metrics such as Test ESR and Test SNR. This result should be interpreted within the current dataset and split.
 
 ## 7. Why Medium Instead of Large
 
-Large currently remains a smoke checkpoint. It has a larger receptive field, but it also has much higher inference cost in the current benchmark. Medium has completed formal 20-epoch GPU training and gives better validated held-out results. Therefore, Medium is the defensible final model for the current project state.
+GatedTCN-Large has a larger receptive field but currently remains a smoke checkpoint. Large also has higher inference cost in the current benchmark. GatedTCN-Medium has completed formal training and has validated held-out test metrics. Therefore, Medium is the defensible final selected model. Large can be considered future work if more GPU time is available.
 
 ## 8. Remaining Work
 
 - Formal train Small and Large if more GPU time is available.
 - Run multiple random seeds.
-- Use more amplifier / pedal datasets.
-- Add listening test with human raters.
+- Test on more amplifier / pedal datasets.
+- Add subjective listening tests with human raters.
+- Compare against more architectures such as LSTM, WaveNet-like variants, or lightweight Conv-TCN variants.

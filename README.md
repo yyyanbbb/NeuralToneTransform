@@ -279,6 +279,7 @@ The final selected custom model is `GatedTCN-Medium`.
 - Prediction: `outputs/tcn_gated/medium/prediction.wav`
 - Model card: `reports/FINAL_TCN_MODEL_CARD.md`
 - Final experiment summary: `reports/FINAL_EXPERIMENT_SUMMARY.md`
+- Subjective listening template: `reports/SUBJECTIVE_LISTENING_TEMPLATE.md`
 
 Small and Large are currently smoke checkpoints unless formal training is run separately. They are not used as the final selected model.
 

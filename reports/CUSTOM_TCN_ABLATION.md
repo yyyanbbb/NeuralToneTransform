@@ -28,7 +28,7 @@
 - Medium is the only TCN model that has completed formal training.
 - Small and Large are smoke checkpoints, not formal training results; they are useful for structure runnability checks and preliminary comparison only.
 - Small and Large smoke metrics must not be treated as final ablation conclusions.
-- If these results are described in a paper, the section should be called a preliminary ablation unless Small and Large later receive formal training.
+- If these results are described in a paper, the section should be called a preliminary ablation unless Small/Large later receive formal training.
 - Medium completed 20-epoch formal GPU training and now has the strongest held-out test MSE, ESR, and SNR among the current TCN variants.
 - Large has a receptive field of 8189 samples, exceeding the approximate A2 reference of 6350 samples, but its current result is still a smoke checkpoint.
 

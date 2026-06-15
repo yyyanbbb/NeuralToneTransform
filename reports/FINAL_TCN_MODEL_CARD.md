@@ -7,8 +7,8 @@ GatedTCN-Medium is selected as the final custom TCN model.
 ## Reason for Selection
 
 - It completed 20-epoch formal GPU training.
-- It achieved the best held-out test performance among formally trained custom TCN models.
-- It outperformed A1/A2 baselines on Test ESR and Test SNR.
+- It achieved strong held-out test performance using the formal checkpoint.
+- It outperformed A1/A2 baselines on key test metrics in the current experiment, especially Test ESR and Test SNR.
 - It has a lower RTF than A1/A2 baselines in the current benchmark.
 - Small and Large remain smoke checkpoints and are not selected as final models.
 
@@ -37,16 +37,17 @@ GatedTCN-Medium is selected as the final custom TCN model.
 | Best Epoch | 19 |
 | Best Val Loss | 0.00628651725128293 |
 | Checkpoint | outputs/tcn_gated/medium/checkpoints/best.pt |
+| Prediction | outputs/tcn_gated/medium/prediction.wav |
 
 ## Held-out Test Metrics
 
 | Metric | Value |
 |---|---:|
-| Test MSE | 0.0008283822842243348 |
-| Test MAE | 0.02012827992587347 |
-| Test ESR | 0.06080636323433006 |
-| Test MRSTFT | 1.9389014005661012 |
-| Test SNR | 12.32761074742885 |
+| Test MSE | 0.000828382 |
+| Test MAE | 0.0201283 |
+| Test ESR | 0.0608064 |
+| Test MRSTFT | 1.9389 |
+| Test SNR | 12.3276 |
 
 ## Inference Speed
 
@@ -55,10 +56,26 @@ GatedTCN-Medium is selected as the final custom TCN model.
 | RTF | 0.01329061198095302 |
 | Samples/s | 3611571.842499769 |
 | Average Chunk Latency ms | 71.7117828566448 |
+| Inference Time Seconds | 2.5252123999525793 |
+
+## Comparison Summary
+
+| Model | Test ESR | Test SNR | RTF | Notes |
+|---|---:|---:|---:|---|
+| A1 baseline | 1.7338 | -1.91394 | 0.0670541 | Baseline prediction-file mode |
+| A2-Lite baseline | 1.08471 | -0.275191 | 0.0517085 | Baseline prediction-file mode |
+| A2-Full baseline | 1.42595 | -0.982792 | 0.0708378 | Baseline prediction-file mode |
+| GatedTCN-Medium | 0.0608064 | 12.3276 | 0.0132906 | Final selected model; formal 20-epoch GPU checkpoint |
+
+- Lower ESR means lower waveform energy error.
+- Higher SNR means the prediction is closer to the target wet signal.
+- Lower RTF means faster inference.
+- RTF lower than 1 means faster-than-real-time offline inference.
 
 ## Limitations
 
-- Only GatedTCN-Medium has completed formal 20-epoch training.
+- Only GatedTCN-Medium has completed formal 20-epoch GPU training.
 - Small and Large are currently smoke checkpoints.
 - Final subjective listening evaluation still needs manual human judgment.
-- The model is trained on the current aligned dataset and may not generalize to unseen amplifiers or pedals without retraining.
+- The model is trained on the current aligned dataset and may not generalize to unseen amplifiers, pedals, recording chains, or guitar tones without retraining.
+- Current results are based on the current dataset and held-out test split only.
