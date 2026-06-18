@@ -285,6 +285,18 @@ The final selected custom model is GatedTCN-Medium.
 
 Small and Large have completed formal 20-epoch GPU ablation runs. They are not used as the final selected model. Large formal result may be considered in future model selection, but this package keeps GatedTCN-Medium as the final selected model for consistency.
 
+## Formal TCN Ablation Status
+
+All three custom TCN variants have completed 20-epoch formal GPU ablation runs.
+
+| Model | Training Status | Test ESR | Test SNR | RTF | Selection Status |
+|---|---|---:|---:|---:|---|
+| GatedTCN-Small | Formal 20-epoch GPU checkpoint | 0.141307 | 8.538 | 0.00647809 | Ablation result |
+| GatedTCN-Medium | Formal 20-epoch GPU checkpoint | 0.0608064 | 12.3276 | 0.0132906 | Final selected custom model |
+| GatedTCN-Large | Formal 20-epoch GPU checkpoint | 0.0489031 | 13.1984 | 0.0500886 | Ablation result; future selection candidate |
+
+Medium remains the final selected custom model for this package. Large has stronger held-out test metrics in the current ablation, but it has higher inference cost and does not automatically replace the selected final model.
+
 Reproduce the Medium formal GPU run:
 
 ```powershell
